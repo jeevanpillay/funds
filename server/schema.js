@@ -13,6 +13,12 @@ exports.typeDefs = gql`
       instructions: String!,
       username: String
     ): Recipe
+
+    signupUser(username: String!, email: String!, password: String!): Token
+  }
+
+  type Token {
+    token: String!
   }
 
   type Recipe {

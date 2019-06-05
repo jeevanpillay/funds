@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { ApolloServer } = require('apollo-server-express');
+const cors = require('cors');
 
 // Configure PORT
 require('dotenv').config({
@@ -31,7 +32,12 @@ mongoose
 // initialise application
 const app = express();
 const path = '/graphql';
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+};
 
+app.use(cors(corsOptions));
 const server = new ApolloServer({
     typeDefs,
     resolvers,
