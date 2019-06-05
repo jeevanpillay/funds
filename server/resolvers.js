@@ -1,8 +1,18 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
 
-const createToken = (user, secret, expiresIn) => {
-    const { username, email } = user;
-    return jwt.sign({ username, email }, secret, { expiresIn });
+// JSON Web Token configurations
+const createToken = user => {
+  const { username, email } = user;
+
+  // create token
+  var token = jwt.sign({ username, email }, process.env.SECRET, {
+    expiresIn: process.env.JWT_EXPIRATION,
+    // algorithm: "RS256"
+  });
+
+  // return
+  return token;
 };
 
 exports.resolvers = {
@@ -37,7 +47,21 @@ exports.resolvers = {
                 password
             }).save();
 
-            return { token: createToken(newUser, process.env.SECRET, "1hr")}
-        }
+            return { token: createToken(newUser)}
+        },
+
+        signinUser: async (root, { username, password }, { User }) => {
+            const user = await User.findOne({ username });
+            if (!user) {
+              throw new Error("Invalid Username");
+            }
+      
+            const isValidPassword = await bcrypt.compare(password, user.password);
+            if (!isValidPassword) {
+              throw new Error("Invalid password");
+            }
+      
+            return { token: createToken(user) };
+          },
     }
 };
