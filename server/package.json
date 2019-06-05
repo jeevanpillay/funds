@@ -22,7 +22,8 @@
   },
   "scripts": {
     "server": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client": "cd .. && cd client && yarn start",
+    "dev": "concurrently --names \"server,client\" \"yarn run server --silent\" \"yarn run client --silent\""
   },
   "author": "",
   "license": "ISC"
