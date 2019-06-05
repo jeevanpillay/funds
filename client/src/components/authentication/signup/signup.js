@@ -128,19 +128,31 @@ class Signup extends React.Component {
       localStorage.setItem("token", data.signupUser.token);
       await this.props.refetch();
       this.clearState();
-      this.props.history.push("/administration");
+      this.props.history.push("/");
     });
   };
 
   validateForm = () => {
-    const { username, email, password, passwordConfirmation } = this.state;
+    const { 
+      username, 
+      email, 
+      password, 
+      passwordConfirmation } = this.state;
+
     const isInvalid =
       !username || !email || !password || password !== passwordConfirmation;
+
     return isInvalid;
   };
 
   render() {
-    const { username, email, password, passwordConfirmation } = this.state;
+    const { 
+      username, 
+      email, 
+      password, 
+      passwordConfirmation 
+    } = this.state;
+
     const { classes } = this.props;
 
     return (
@@ -215,12 +227,6 @@ class Signup extends React.Component {
               );
             }}
           </Mutation>
-          <div className={classes.powered}>
-            Powered by{" "}
-            <a className={classes.url} href="http://tech.monster.com.my/">
-              Monster Tech
-            </a>
-          </div>
         </div>
       </div>
     );

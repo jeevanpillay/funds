@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { ApolloServer } = require('apollo-server-express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 // Configure PORT
 require('dotenv').config({
@@ -31,20 +32,39 @@ mongoose
 
 // initialise application
 const app = express();
-const path = '/graphql';
+
+// Setup cors so that client can talk to back end
 const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true
 };
-
 app.use(cors(corsOptions));
+
+// JWT authentication middleware
+app.use(async (req, res, next) => {
+  const token = req.headers["authorization"];
+  if (token !== "null") {
+    try {
+        const currentUser = await jwt.verify(token, process.env.SECRET);
+        req.currentUser = currentUser;
+    } 
+    catch (err) {
+        console.log(error(err));
+    }
+  }
+  next();
+});
+
+// Initialise ApolloServer with the associated typeDefs and resolvers.
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => ({ Recipe, User }),
+    context: ({ req }) => ({ Recipe, User, currentUser: req.currentUser }),
 });
+const path = '/graphql';
 server.applyMiddleware({ app, path })
 
+// Listen to PORT specified
 app.listen(PORT, () => {
     console.log(`Server listen on PORT ${PORT}`)
 });

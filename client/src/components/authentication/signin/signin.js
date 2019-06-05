@@ -123,7 +123,7 @@ class Signin extends React.Component {
       localStorage.setItem("token", data.signinUser.token);
       await this.props.refetch();
       this.clearState();
-      this.props.history.push("/administration");
+      // this.props.history.push("/");
     });
   };
 
@@ -189,12 +189,6 @@ class Signin extends React.Component {
               );
             }}
           </Mutation>
-          <div className={classes.powered}>
-            Powered by{" "}
-            <a className={classes.url} href="http://tech.monster.com.my/">
-              Monster Tech
-            </a>
-          </div>
         </div>
       </div>
     );
