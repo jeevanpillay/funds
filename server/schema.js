@@ -1,9 +1,9 @@
 const { gql } = require('apollo-server')
  
 exports.typeDefs = gql`
-    type Query {
-        _dummy: String
-     }
+  type Query {
+    getAllRecipes: [Recipe]
+  }
 
   type Recipe {
     name: String!

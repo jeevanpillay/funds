@@ -25,7 +25,7 @@ mongoose
   .then(() => console.log("DB connected"))
   .catch(err => console.error(err));
 
-mongoose.set('useCreateIndex', true)
+mongoose.set('useCreateIndex', true);
 
 // initialise application
 const app = express();
