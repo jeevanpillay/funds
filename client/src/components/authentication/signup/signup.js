@@ -6,7 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
 
 import { Mutation } from "react-apollo";
-import { SIGNUP_USER } from "../../../queries";
+import { SIGNUP_USER } from "../../../queries/authentication.queries";
 
 const initialState = {
   username: "",

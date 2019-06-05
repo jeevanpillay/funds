@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Query } from "react-apollo";
-import { GET_CURRENT_USER } from "../../queries/index";
+import { GET_CURRENT_USER } from "../../queries/authentication.queries";
 
 const withSession = Component => props => (
   <Query query={GET_CURRENT_USER}>
