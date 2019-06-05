@@ -1,6 +1,11 @@
-exports.typeDefs = `
+const { gql } = require('apollo-server')
+ 
+exports.typeDefs = gql`
+    type Query {
+        _dummy: String
+     }
 
-type Recipe {
+  type Recipe {
     name: String!
     category: String!
     description: String!
@@ -8,16 +13,13 @@ type Recipe {
     createdDate: String
     likes: Int
     username: String
-}
-
-type User {
-    username: String! @unique
+  }
+ 
+  type User {
+    username: String!
     password: String!
     email: String!
     joinDate: String
     favorites: [Recipe]
-}
-
-
-
-`;
+  }
+`
