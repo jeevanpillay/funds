@@ -22,10 +22,11 @@ mongoose
     process.env.MONGO_URI,
     { useNewUrlParser: true }
   )
-  .then(() => console.log("DB connected"))
+  .then(() => {
+      console.log("DB connected");
+      mongoose.set('useCreateIndex', true);
+    })
   .catch(err => console.error(err));
-
-mongoose.set('useCreateIndex', true);
 
 // initialise application
 const app = express();
