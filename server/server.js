@@ -25,16 +25,18 @@ mongoose
   .then(() => console.log("DB connected"))
   .catch(err => console.error(err));
 
+mongoose.set('useCreateIndex', true)
+
 // initialise application
 const app = express();
+const path = '/graphql';
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({ req }) => ({ Recipe, User }),
 });
-
-server.applyMiddleware({ app })
+server.applyMiddleware({ app, path })
 
 app.listen(PORT, () => {
     console.log(`Server listen on PORT ${PORT}`)
