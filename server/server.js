@@ -5,6 +5,8 @@ const { ApolloServer } = require("apollo-server-express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const chalk = require("chalk");
+const Web3 = require('web3');
+const thorify = require("thorify").thorify;
 
 // Configure chalk
 const error = chalk.bold.red;
@@ -38,6 +40,9 @@ mongoose
   .catch(err => console.log(error(err)));
 
 mongoose.set("useCreateIndex", true);
+
+// Configure Vechain Thor Setup
+const web3 = thorify(new Web3(), "http://localhost:8669");
 
 // initialise application
 const app = express();
