@@ -46,14 +46,21 @@ exports.resolvers = {
         throw new Error("User already exists");
       }
 
+      const privateKey = hdkey.derivePrivateKeyByIndex(
+        hdroot,
+        await User.countDocuments()
+      );
+
+      if (privateKey === null) {
+          throw new Error("Issue with creating account!");
+      }
+
       const newUser = await new User({
         username,
         email,
         password,
-        address: hdkey.derivePrivateKeyByIndex(
-          hdroot,
-          await User.countDocuments()
-        )
+        privateKey: privateKey.toString('hex'),
+        address: hdkey.PrivateKeyToAddress(privateKey).toString('hex')
       }).save();
 
       return { token: createToken(newUser) };

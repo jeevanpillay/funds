@@ -20,6 +20,11 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now()
     },
+    privateKey: {
+        type: String,
+        required: true,
+        unique: true
+    },
     address: {
         type: String,
         required: true,

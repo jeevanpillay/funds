@@ -51,14 +51,14 @@ VechainHDKey.createRoot = function (seedBuffer) {
 };
 
 VechainHDKey.createMasterPrivateKey = function (root) {
-  return root.privateKey.toString("hex");
-};
-
-VechainHDKey.createMasterPublicKey = function (root) {
-  return root.publicKey.toString("hex");
+  return root.privateKey;
 };
 
 VechainHDKey.derivePrivateKeyByIndex = function (root, index) {
+  if (index === null) {
+    return null;
+  }
+
   return root.derive(VET_DERIVATION_PATH + "/" + index).privateKey;
 };
 
@@ -75,7 +75,6 @@ VechainHDKey.PrivateKeyToAddress = function (privateKey) {
     .publicKeyToAddress(
       cry.secp256k1.derivePublicKey(privateKey)
     )
-    .toString("hex");
 };
 
 module.exports = VechainHDKey;

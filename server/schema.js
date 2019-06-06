@@ -20,6 +20,7 @@ exports.typeDefs = gql`
     password: String!
     email: String!
     joinDate: String
+    privateKey: String!
     address: String!
   }
 `
