@@ -17,10 +17,6 @@ const createToken = user => {
 
 exports.resolvers = {
     Query: {
-        getAllRecipes: async (root, args, { Recipe }) => { 
-            return await Recipe.find();
-        },
-
         getCurrentUser: async (root, args, { currentUser, User }) => {
             if (!currentUser) {
                 return null;
@@ -28,27 +24,16 @@ exports.resolvers = {
 
             const user = await User.findOne({
               username: currentUser.username
-            }).populate({
-                path: 'favorites',
-                model: 'Recipe'
-            });
+            })
+            // .populate({
+            //     path: 'favorites',
+            //     model: 'Recipe'
+            // });
             return user;
           },
     },
 
     Mutation: {
-        addRecipe: async (root, { name, description, category,instructions, username }, { Recipe }) => {
-            const r = await new Recipe({
-                name,
-                description,
-                category,
-                instructions,
-                username
-            }).save();
-
-            return r;
-        },
-
         signupUser: async(root, { username, email, password }, { User }) => {
             const user = await User.findOne({username});
             if (user) {

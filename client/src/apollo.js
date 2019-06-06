@@ -14,7 +14,7 @@ const client = new ApolloClient({
         //request for user's token to authenticate
         const token = localStorage.getItem("token");
 
-        if (token !== null || token !== undefined) {
+        if (token !== null || token !== undefined || token !== "null") {
             operation.setContext({
                 headers: { 
                     authorization: token

@@ -19,7 +19,6 @@ const PORT = process.env.PORT || 4444;
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 // Mongoose Models
-const Recipe = require("./models/Recipe");
 const User = require("./models/User");
 
 // Create Schemas
@@ -68,7 +67,7 @@ app.use(async (req, res, next) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ Recipe, User, currentUser: req.currentUser })
+  context: ({ req }) => ({ User, currentUser: req.currentUser })
 });
 const path = "/graphql";
 server.applyMiddleware({ app, path });
