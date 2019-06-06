@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server')
- 
+
 exports.typeDefs = gql`
   type Query {
     getCurrentUser: User
@@ -20,13 +20,6 @@ exports.typeDefs = gql`
     password: String!
     email: String!
     joinDate: String
-    coins: [Crypto]
-  }
-
-  type Crypto {
-    _id: ID
-    name: String!
     address: String!
-    balance: Int!
   }
 `

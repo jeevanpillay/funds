@@ -1,17 +1,19 @@
-const {
-  cry
-} = require("thor-devkit");
+// Imports
+const { cry } = require("thor-devkit");
 const HDKey = require("hdkey");
 const BIP39 = require("bip39");
+
+// Constants
 const VET_DERIVATION_PATH = `m/44'/818'/0'/0`;
 
-function VechainHDKey() {}
+// VechainHDKey functions
+function VechainHDKey() { }
 
-VechainHDKey.createMnemonic = function() {
+VechainHDKey.createMnemonic = function () {
   return cry.mnemonic.generate();
 };
 
-VechainHDKey.getMnemonic = function() {
+VechainHDKey.getMnemonic = function () {
   return [
     "light",
     "room",
@@ -28,20 +30,22 @@ VechainHDKey.getMnemonic = function() {
   ];
 };
 
-VechainHDKey.createSeed = function(mnemonicBuffer) {
+VechainHDKey.createSeed = function (mnemonicBuffer) {
   return BIP39.mnemonicToSeedSync(mnemonicBuffer.join(" "));
 };
 
-VechainHDKey.createRoot = function(seedBuffer) {
+VechainHDKey.createRoot = function (seedBuffer) {
   return HDKey.fromMasterSeed(seedBuffer);
 };
 
-VechainHDKey.createMasterPrivateKey = function(root) {
+VechainHDKey.createMasterPrivateKey = function (root) {
   return root.privateKey.toString("hex");
 };
 
-VechainHDKey.derivePrivateKeyByIndex = function(root, index) {
-  return root.derive(VET_DERIVATION_PATH + '/' + index).privateKey.toString("hex");
-}
+VechainHDKey.derivePrivateKeyByIndex = function (root, index) {
+  return root
+    .derive(VET_DERIVATION_PATH + "/" + index)
+    .privateKey.toString("hex");
+};
 
 module.exports = VechainHDKey;

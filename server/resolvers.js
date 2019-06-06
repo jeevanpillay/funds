@@ -1,12 +1,11 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt/bcrypt");
-const hdkey = require('./vechainhdkey');
+const hdkey = require("./vechainhdkey");
 
 // Vechain HDKey configurations
 const mnemonic = hdkey.getMnemonic();
 const seed = hdkey.createSeed(mnemonic);
-const root = hdkey.createRoot(seed);
-const masterPrivateKey = hdkey.createMasterPrivateKey(root);
+const hdroot = hdkey.createRoot(seed);
 
 // JSON Web Token configurations
 const createToken = user => {
@@ -14,7 +13,7 @@ const createToken = user => {
 
   // create token
   var token = jwt.sign({ username, email }, process.env.SECRET, {
-    expiresIn: process.env.JWT_EXPIRATION,
+    expiresIn: process.env.JWT_EXPIRATION
     // algorithm: "RS256"
   });
 
@@ -23,51 +22,55 @@ const createToken = user => {
 };
 
 exports.resolvers = {
-    Query: {
-        getCurrentUser: async (root, args, { currentUser, User }) => {
-            if (!currentUser) {
-                return null;
-            }
+  Query: {
+    getCurrentUser: async (root, args, { currentUser, User }) => {
+      if (!currentUser) {
+        return null;
+      }
 
-            const user = await User.findOne({
-              username: currentUser.username
-            })
-            // .populate({
-            //     path: 'favorites',
-            //     model: 'Recipe'
-            // });
-            return user;
-          },
+      const user = await User.findOne({
+        username: currentUser.username
+      });
+      // .populate({
+      //     path: 'favorites',
+      //     model: 'Recipe'
+      // });
+      return user;
+    }
+  },
+
+  Mutation: {
+    signupUser: async (root, { username, email, password }, { User }) => {
+      const user = await User.findOne({ username });
+      if (user) {
+        throw new Error("User already exists");
+      }
+
+      const newUser = await new User({
+        username,
+        email,
+        password,
+        address: hdkey.derivePrivateKeyByIndex(
+          hdroot,
+          await User.countDocuments()
+        )
+      }).save();
+
+      return { token: createToken(newUser) };
     },
 
-    Mutation: {
-        signupUser: async(root, { username, email, password }, { User }) => {
-            const user = await User.findOne({username});
-            if (user) {
-                throw new Error("User already exists");
-            }
+    signinUser: async (root, { username, password }, { User }) => {
+      const user = await User.findOne({ username });
+      if (!user) {
+        throw new Error("Invalid Username");
+      }
 
-            const newUser = await new User({
-                username,
-                email,
-                password
-            }).save();
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        throw new Error("Invalid password");
+      }
 
-            return { token: createToken(newUser)}
-        },
-
-        signinUser: async (root, { username, password }, { User }) => {
-            const user = await User.findOne({ username });
-            if (!user) {
-              throw new Error("Invalid Username");
-            }
-      
-            const isValidPassword = await bcrypt.compare(password, user.password);
-            if (!isValidPassword) {
-              throw new Error("Invalid password");
-            }
-      
-            return { token: createToken(user) };
-          },
+      return { token: createToken(user) };
     }
+  }
 };
