@@ -10,7 +10,6 @@ Medium Guide: https://medium.com/@harshagoli/so-you-want-to-build-an-ethereum-hd
 Vechain Wallet Information: https://github.com/vechain/thor-client-sdk4j
 */
 
-
 // Imports
 const { cry } = require("thor-devkit");
 const HDKey = require("hdkey");
@@ -55,10 +54,28 @@ VechainHDKey.createMasterPrivateKey = function (root) {
   return root.privateKey.toString("hex");
 };
 
+VechainHDKey.createMasterPublicKey = function (root) {
+  return root.publicKey.toString("hex");
+};
+
 VechainHDKey.derivePrivateKeyByIndex = function (root, index) {
-  return root
-    .derive(VET_DERIVATION_PATH + "/" + index)
-    .privateKey.toString("hex");
+  return root.derive(VET_DERIVATION_PATH + "/" + index).privateKey;
+};
+
+VechainHDKey.derivePublicKeyByPrivateKey = function (privateKey) {
+  return cry.secp256k1.derivePublicKey(privateKey);
+};
+
+VechainHDKey.PublicKeyToAddress = function (publicKey) {
+  return cry.publicKeyToAddress(publicKey);
+};
+
+VechainHDKey.PrivateKeyToAddress = function (privateKey) {
+  return cry
+    .publicKeyToAddress(
+      cry.secp256k1.derivePublicKey(privateKey)
+    )
+    .toString("hex");
 };
 
 module.exports = VechainHDKey;
