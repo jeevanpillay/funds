@@ -1,5 +1,12 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt/bcrypt");
+const hdkey = require('./vechainhdkey');
+
+// Vechain HDKey configurations
+const mnemonic = hdkey.getMnemonic();
+const seed = hdkey.createSeed(mnemonic);
+const root = hdkey.createRoot(seed);
+const masterPrivateKey = hdkey.createMasterPrivateKey(root);
 
 // JSON Web Token configurations
 const createToken = user => {
