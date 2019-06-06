@@ -30,7 +30,7 @@ mongoose
     })
   .catch(err => console.error(err));
 
-// initialise application
+  // initialise application
 const app = express();
 
 // Setup cors so that client can talk to back end
@@ -43,7 +43,7 @@ app.use(cors(corsOptions));
 // JWT authentication middleware
 app.use(async (req, res, next) => {
   const token = req.headers["authorization"];
-  if (token !== "null") {
+  if (token !== "null" && token !== undefined) {
     try {
         const currentUser = await jwt.verify(token, process.env.SECRET);
         req.currentUser = currentUser;

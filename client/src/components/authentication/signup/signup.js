@@ -163,7 +163,7 @@ class Signup extends React.Component {
           className={classes.backgroundImg}
         />
         <div className={classes.gradient} />
-        <div class={classes.loginForm}>
+        <div className={classes.loginForm}>
           <hgroup className={classes.hgroup}>
             <Typography className={classes.hgroupText}>
               ADMIN SIGN-UP
