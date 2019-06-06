@@ -6,7 +6,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const chalk = require("chalk");
 const Web3 = require('web3');
-const thorify = require("thorify").thorify;
+const Thorify = require("thorify").thorify;
 
 // Configure chalk
 const error = chalk.bold.red;
@@ -19,6 +19,7 @@ require("dotenv").config({
 });
 const PORT = process.env.PORT || 4444;
 const NODE_ENV = process.env.NODE_ENV || "development";
+const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
 
 // Mongoose Models
 const User = require("./models/User");
@@ -42,7 +43,11 @@ mongoose
 mongoose.set("useCreateIndex", true);
 
 // Configure Vechain Thor Setup
-const web3 = thorify(new Web3(), "http://localhost:8669");
+// Connection hosted on Digital Ocean currently.
+// Connect to localhost:8669 if running locally/no internet.
+// Check if connection is working:
+// ---> thorify.eth.getBlock("latest").then(res => console.log(res));
+const thorify = Thorify(new Web3(), THOR_NETWORK);
 
 // initialise application
 const app = express();
@@ -69,12 +74,12 @@ app.use(async (req, res, next) => {
 });
 
 // Initialise ApolloServer with the associated typeDefs and resolvers.
+const path = "/graphql";
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => ({ User, currentUser: req.currentUser })
 });
-const path = "/graphql";
 server.applyMiddleware({ app, path });
 
 // Listen to the Port
