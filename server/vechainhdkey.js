@@ -1,3 +1,16 @@
+/*
+References for VechainHDKey:
+Thor-devkit's cry: https://github.com/vechain/thor-devkit.js/blob/master/src/cry/mnemonic.ts
+BIP39
+HDKey
+Ethereum HDKey: https://github.com/ethereumjs/ethereumjs-wallet/blob/01382b1e5631f2e4c73ee5ac9e94e8a8af0d4907/hdkey.js
+
+Notes:
+Medium Guide: https://medium.com/@harshagoli/so-you-want-to-build-an-ethereum-hd-wallet-cb2b7d7e4998
+Vechain Wallet Information: https://github.com/vechain/thor-client-sdk4j
+*/
+
+
 // Imports
 const { cry } = require("thor-devkit");
 const HDKey = require("hdkey");
