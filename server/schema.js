@@ -20,5 +20,13 @@ exports.typeDefs = gql`
     password: String!
     email: String!
     joinDate: String
+    coins: [Crypto]
+  }
+
+  type Crypto {
+    _id: ID
+    name: String!
+    address: String!
+    balance: Int!
   }
 `
