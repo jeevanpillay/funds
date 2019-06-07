@@ -2,16 +2,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const { ApolloServer } = require("apollo-server-express");
-const { ApolloClient } = require('apollo-client');
-const { HttpLink } = require('apollo-link-http');
-const  InMemoryCache = require('apollo-cache-inmemory');
-const gql = require('graphql-tag');
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const chalk = require("chalk");
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
-const { graphql } = require('graphql');
 
 // Configure chalk
 const error = chalk.bold.red;
@@ -129,26 +124,6 @@ const server = new ApolloServer({
   context: ({ req }) => ({ User, currentUser: req.currentUser })
 });
 server.applyMiddleware({ app, path });
-
-// // Initialise ApolloClient
-// const client = new ApolloClient({
-//   link: new HttpLink({ uri: 'http://localhost:4444/graphql' }),
-//   cache: new InMemoryCache()
-// });
-
-// client.query({
-//   query: gql`
-//     query users {
-//       users {
-//         id
-//         fullName
-//         email
-//       }
-//     }
-//   `,
-// })
-// .then(({data}) => appendData(data))
-// .catch(error => console.error(error));
 
 // Listen to the Port
 app.listen(PORT, () => {
