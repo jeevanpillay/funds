@@ -28,11 +28,22 @@ const User = require("./models/User");
 const { typeDefs } = require("./schema");
 const { resolvers } = require("./resolvers");
 
+// Setup address
+var address = {};
+
 // connect to database
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true })
   .then(() => {
     console.log(success(`Connected to ${connection("MongoDB")}!`));
+
+    // Create a watch to ensure that new users data are added to the address variable
+    // TODO: destructure data.fullDocument
+    // TODO: change address to hex instead of string?
+    User.watch().on('change', (data) => {
+      address[data.fullDocument.address] = data.fullDocument._id;
+      console.log(address);
+    });
   })
   .catch(err => console.log(error(err)));
 
@@ -44,17 +55,6 @@ mongoose.set("useCreateIndex", true);
 // Check if connection is working:
 // ---> thorify.eth.getBlock("latest").then(res => console.log(res));
 const web3 = Thorify(new Web3(), THOR_NETWORK);
-
-// Setup mongoose query
-var address = {};
-setInterval(function() {
-  User.find({}, function(err, users) {
-    if (err) console.log(error(err));
-    users.forEach(function(user) {
-      address[user.address] = user._id;
-    });
-  });
-}, 1000);
 
 // Setup subscription
 const subscription = web3.eth
@@ -121,13 +121,12 @@ app.use(async (req, res, next) => {
 });
 
 // Initialise ApolloServer with the associated typeDefs and resolvers.
-const path = "/graphql";
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => ({ User, currentUser: req.currentUser })
 });
-server.applyMiddleware({ app, path });
+server.applyMiddleware({ app });
 
 // Listen to the Port
 app.listen(PORT, () => {

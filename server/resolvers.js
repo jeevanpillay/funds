@@ -36,14 +36,6 @@ exports.resolvers = {
       //     model: 'Recipe'
       // });
       return user;
-    },
-
-    getUsersAddress: async (root, args, { User }) => {
-        return [
-            "0x82f5488B078A1fBdFa959b944aBF3AA583f4109B",
-            "0xf95cA4Bc8DAcBDd8045DDFD6CcB9ec06CFCf886E",
-            "0xd76Fc92744BC85a63Fe4326F39707EEb03884b2C"
-          ];
     }
   },
 
