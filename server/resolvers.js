@@ -59,8 +59,8 @@ exports.resolvers = {
         username,
         email,
         password,
-        privateKey: privateKey.toString('hex'),
-        address: hdkey.PrivateKeyToAddress(privateKey).toString('hex')
+        privateKey: "0x" + privateKey.toString('hex'),
+        address: "0x" + hdkey.PrivateKeyToAddress(privateKey).toString('hex')
       }).save();
 
       return { token: createToken(newUser) };

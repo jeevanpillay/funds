@@ -33,7 +33,6 @@ const UserSchema = new Schema({
     balance: {
         type: Number,
         default: 0,
-        alias: "VET"
     }
 })
 

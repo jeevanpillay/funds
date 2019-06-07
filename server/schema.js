@@ -22,5 +22,6 @@ exports.typeDefs = gql`
     joinDate: String
     privateKey: String!
     address: String!
+    balance: Int
   }
 `
