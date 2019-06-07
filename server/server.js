@@ -44,14 +44,19 @@ mongoose.set("useCreateIndex", true);
 // Check if connection is working:
 // ---> thorify.eth.getBlock("latest").then(res => console.log(res));
 const web3 = Thorify(new Web3(), THOR_NETWORK);
-// web3.eth.getBlock("latest").then(res => console.log("latest",res));
-// web3.eth.getChainTag().then(res => console.log("chain",res));
-const accounts = [
-  "0x82f5488B078A1fBdFa959b944aBF3AA583f4109B",
-  "0xf95cA4Bc8DAcBDd8045DDFD6CcB9ec06CFCf886E",
-  "0xd76Fc92744BC85a63Fe4326F39707EEb03884b2C"
-];
 
+// Setup mongoose query
+var address = {};
+setInterval(function() {
+  User.find({}, function(err, users) {
+    if (err) console.log(error(err));
+    users.forEach(function(user) {
+      address[user.address] = user._id;
+    });
+  });
+}, 1000);
+
+// Setup subscription
 const subscription = web3.eth
   .subscribe("newBlockHeaders", function(error, result) {
     if (!error) {
@@ -79,9 +84,8 @@ const subscription = web3.eth
               const clauses = txRes.clauses;
               if (clauses) {
                 for (var clause of clauses) {
-                  console.log(clause.to, clause.value);
-                  // if (accounts.includes(clause.to)) console.log(true);
-                  // else console.log(false);
+                  if (address[clause.to]) console.log(true);
+                  // console.log(Object.keys(address).length)
                 }
               }
             })
