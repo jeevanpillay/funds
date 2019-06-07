@@ -62,14 +62,7 @@ mongoose
         const transactionValue = parseInt(data.amount.replace(/^#/, ''), 16);
         console.log("id",id);
         console.log("txval",transactionValue);
-        User.update(
-          { 
-            _id: id 
-          },
-          {
-            balance: transactionValue
-          }
-        );
+        updateBalance(addr, transactionValue);
       });
 
       subscription.on("changed", data => {
@@ -81,6 +74,16 @@ mongoose
   })
   .catch(err => console.log(error(err)));
 
+async function updateBalance(addr, newBalance) {
+  await User.updateOne(
+    { 
+      address: addr
+    },
+    {
+      balance: newBalance
+    }
+  );
+}  
 mongoose.set("useCreateIndex", true);
 // Configure Vechain Thor Setup
 // Connection hosted on Digital Ocean currently.
@@ -88,12 +91,6 @@ mongoose.set("useCreateIndex", true);
 // Check if connection is working:
 // ---> thorify.eth.getBlock("latest").then(res => console.log(res));
 const web3 = Thorify(new Web3(), THOR_NETWORK);
-
-const addr = [
-  "0x82f5488B078A1fBdFa959b944aBF3AA583f4109B",
-  "0xf95cA4Bc8DAcBDd8045DDFD6CcB9ec06CFCf886E",
-  "0xd76Fc92744BC85a63Fe4326F39707EEb03884b2C"
-];
 
 // // Setup subscription
 // const subscription = web3.eth
