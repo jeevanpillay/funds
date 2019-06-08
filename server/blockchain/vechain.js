@@ -1,3 +1,12 @@
+/**
+ * Monitoring all address and send balances to the HOT wallet
+ * --> https://ethereum.stackexchange.com/questions/18387/how-to-monitor-all-your-addresses-and-send-payments-out-immediately-to-a-main-ad
+ *
+ * Monitoring VET address for deposits.
+ * --> https://ethereum.stackexchange.com/questions/27805/how-to-programmatically-detect-and-accept-eth-and-erc20-deposits
+ * --> https://ethereum.stackexchange.com/questions/44981/how-to-watch-several-ethereum-addresses-for-transactions?noredirect=1&lq=1
+ */
+
 // imports
 const User = require("../models/User");
 
@@ -21,19 +30,21 @@ VechainBlockchain.createTransferSubscription = function(web3, addr) {
 
   subscription.on("data", data => {
     const amount = data.amount;
-    const value = parseInt(amount.replace(/^#/, ""), 16);
-    this.updateDatabaseUserBalance(addr, value);
+    this.updateDatabaseUserBalance(addr, amount);
   });
 
   return subscription;
 };
 
-VechainBlockchain.updateDatabaseUserBalance = async function(addr, value) {
+VechainBlockchain.updateDatabaseUserBalance = async function(addr, amount) {
   // error check
   const user = await User.findOne({ address: addr });
   if (!user) {
     throw new Error("Public address does not exist");
   }
+
+  // create decimal version of amount
+  const value = parseInt(amount.replace(/^#/, ""), 16);
 
   // update
   await User.updateOne(
@@ -46,55 +57,55 @@ VechainBlockchain.updateDatabaseUserBalance = async function(addr, value) {
   );
 };
 
-VechainBlockchain.createNewBlockHeaderSubscription = function() {
-  // // Setup subscription
-  // const subscription = web3.eth
-  //   .subscribe("newBlockHeaders", function(error, result) {
-  //     if (!error) {
-  //       return;
-  //     }
-  //   })
-  //   .on("data", function(blockHeader) {
-  //     // get block number
-  //     const blockNumber = blockHeader.number;
-  //     // find the block
-  //     web3.eth.getBlock(blockNumber).then(blockRes => {
-  //       // destructure transactions
-  //       const transactions = blockRes.transactions;
-  //       // iterate the transactions if there are transaction in the block
-  //       if (transactions) {
-  //         for (var tx of transactions) {
-  //           web3.eth
-  //             .getTransaction(tx)
-  //             .then(txRes => {
-  //               // get the clauses
-  //               const clauses = txRes.clauses;
-  //               if (clauses) {
-  //                 for (var clause of clauses) {
-  //                   const add = clause.to;
-  //                   if (addr.includes(add)) {
-  //                     console.log('works?');
-  //                   }
-  //                   // if (address[clause.to]) {
-  //                   //   console.log('yes');
-  //                   //   // User.updateOne(
-  //                   //   //   {
-  //                   //   //     _id: address[clause.to]
-  //                   //   //   },
-  //                   //   //   {
-  //                   //   //     balance: 1
-  //                   //   //   }
-  //                   //   // );
-  //                   // }
-  //                 }
-  //               }
-  //             })
-  //             .catch(err => console.log(error(err)));
-  //         }
-  //       }
-  //     }).catch(err => console.log(error(err)));
-  //   })
-  //   .on("error", console.error);
+VechainBlockchain.createNewBlockHeaderSubscription = function(web3) {
+  // initial setup
+  let address = [
+    "0x82f5488b078a1fbdfa959b944abf3aa583f4109b",
+    "0xf95ca4bc8dacbdd8045ddfd6ccb9ec06cfcf886e",
+    "0xd76fc92744bc85a63fe4326f39707eeb03884b2c"
+  ];
+
+  // Setup subscription
+  const subscription = web3.eth
+    .subscribe("newBlockHeaders", function(error, result) {
+      if (!error) {
+        return;
+      }
+    })
+    .on("data", function(blockHeader) {
+      // get block number
+      const blockNumber = blockHeader.number;
+      // find the block
+      web3.eth
+        .getBlock(blockNumber)
+        .then(blockRes => {
+          // destructure transactions
+          const transactions = blockRes.transactions;
+          // iterate the transactions if there are transaction in the block
+          if (transactions) {
+            for (var tx of transactions) {
+              web3.eth
+                .getTransaction(tx)
+                .then(txRes => {
+                  // get the clauses
+                  const clauses = txRes.clauses;
+                  if (clauses) {
+                    for (var clause of clauses) {
+                      const addr = clause.to;
+                      const value = clause.value;
+                      if (address.includes(addr)) {
+                        this.updateDatabaseUserBalance(addr, value);
+                      }
+                    }
+                  }
+                })
+                .catch(err => console.log(err));
+            }
+          }
+        })
+        .catch(err => console.log(err));
+    })
+    .on("error", console.error);
 };
 
 VechainBlockchain.createWatchService = function(web3) {
@@ -131,17 +142,17 @@ VechainBlockchain.createWatchService = function(web3) {
 };
 
 VechainBlockchain.createWatchServiceFake = function(web3) {
-    // configure address
-    let addresses = [
-        "0x82f5488b078a1fbdfa959b944abf3aa583f4109b",
-        "0xf95ca4bc8dacbdd8045ddfd6ccb9ec06cfcf886e",
-        "0xd76fc92744bc85a63fe4326f39707eeb03884b2c"
-    ];
+  // configure address
+  let addresses = [
+    "0x82f5488b078a1fbdfa959b944abf3aa583f4109b",
+    "0xf95ca4bc8dacbdd8045ddfd6ccb9ec06cfcf886e",
+    "0xd76fc92744bc85a63fe4326f39707eeb03884b2c"
+  ];
 
-    let address = {}
-    for (var addr of addresses) {
-        address[addr] = VechainBlockchain.createTransferSubscription(web3, addr);
-    }
-}
+  let address = {};
+  for (var addr of addresses) {
+    address[addr] = VechainBlockchain.createTransferSubscription(web3, addr);
+  }
+};
 
 module.exports = VechainBlockchain;
