@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const chalk = require("chalk");
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
+const VechainBlockchain = require("./blockchain/vechain");
 
 // Configure chalk
 const error = chalk.bold.red;
@@ -28,121 +29,47 @@ const User = require("./models/User");
 const { typeDefs } = require("./schema");
 const { resolvers } = require("./resolvers");
 
-// Setup address
-var address = {};
-
 // connect to database
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true })
   .then(() => {
     console.log(success(`Connected to ${connection("MongoDB")}!`));
 
+    // Setup address
+    let address = {};
+
+    // Setup filters and options for the watch
+    const pipeline = [
+      {
+        $match: {
+          operationType: "insert"
+        }
+      }
+    ];
+
     // Create a watch to ensure that new users data are added to the address variable
-    // TODO: get rid of result and error
-    User.watch().on("change", data => {
-      const id = data.fullDocument._id;
+    User.watch(pipeline).on("change", data => {
+      // destructure address
       const addr = data.fullDocument.address;
 
-      // subscribe to the addresses for incoming vet transfers
-      const subscription = web3.eth.subscribe(
-        "transfers",
-        {
-          recipient: addr
-        },
-        (error, result) => {
-          if (error) {
-            console.log(error(error));
-          } else {
-            console.log(result);
-          }
-        }
+      // create subscription
+      const subscription = VechainBlockchain.createTransferSubscription(
+        web3,
+        addr
       );
 
-      subscription.on("data", data => {
-        const transactionValue = parseInt(data.amount.replace(/^#/, ''), 16);
-        console.log("id",id);
-        console.log("txval",transactionValue);
-        updateBalance(addr, transactionValue);
-      });
+      // add to hash table
+      if (!(addr in address)) address[addr] = subscription;
 
-      subscription.on("changed", data => {
-        console.log("changed", data);
-      });
-
-      address[addr] = subscription;
+      console.log("The addresses", address);
     });
   })
   .catch(err => console.log(error(err)));
 
-async function updateBalance(addr, newBalance) {
-  await User.updateOne(
-    { 
-      address: addr
-    },
-    {
-      balance: newBalance
-    }
-  );
-}  
 mongoose.set("useCreateIndex", true);
+
 // Configure Vechain Thor Setup
-// Connection hosted on Digital Ocean currently.
-// Connect to localhost:8669 if running locally/no internet.
-// Check if connection is working:
-// ---> thorify.eth.getBlock("latest").then(res => console.log(res));
 const web3 = Thorify(new Web3(), THOR_NETWORK);
-
-// // Setup subscription
-// const subscription = web3.eth
-//   .subscribe("newBlockHeaders", function(error, result) {
-//     if (!error) {
-//       return;
-//     }
-//   })
-//   .on("data", function(blockHeader) {
-//     // get block number
-//     const blockNumber = blockHeader.number;
-
-//     // find the block
-//     web3.eth.getBlock(blockNumber).then(blockRes => {
-//       // destructure transactions
-//       const transactions = blockRes.transactions;
-
-//       // iterate the transactions if there are transaction in the block
-//       if (transactions) {
-//         for (var tx of transactions) {
-//           web3.eth
-//             .getTransaction(tx)
-//             .then(txRes => {
-//               // get the clauses
-//               const clauses = txRes.clauses;
-
-//               if (clauses) {
-//                 for (var clause of clauses) {
-//                   const add = clause.to;
-//                   if (addr.includes(add)) {
-//                     console.log('works?');
-//                   }
-//                   // if (address[clause.to]) {
-//                   //   console.log('yes');
-//                   //   // User.updateOne(
-//                   //   //   {
-//                   //   //     _id: address[clause.to]
-//                   //   //   },
-//                   //   //   {
-//                   //   //     balance: 1
-//                   //   //   }
-//                   //   // );
-//                   // }
-//                 }
-//               }
-//             })
-//             .catch(err => console.log(error(err)));
-//         }
-//       }
-//     }).catch(err => console.log(error(err)));
-//   })
-//   .on("error", console.error);
 
 // initialise application
 const app = express();
