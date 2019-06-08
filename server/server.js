@@ -8,6 +8,7 @@ const chalk = require("chalk");
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
 const VechainBlockchain = require("./blockchain/vechain");
+const FakeVechainSubscription = require('./blockchain/fakeSubscription');
 
 // Configure chalk
 const error = chalk.bold.red;
@@ -35,34 +36,8 @@ mongoose
   .then(() => {
     console.log(success(`Connected to ${connection("MongoDB")}!`));
 
-    // Setup address
-    let address = {};
-
-    // Setup filters and options for the watch
-    const pipeline = [
-      {
-        $match: {
-          operationType: "insert"
-        }
-      }
-    ];
-
-    // Create a watch to ensure that new users data are added to the address variable
-    User.watch(pipeline).on("change", data => {
-      // destructure address
-      const addr = data.fullDocument.address;
-
-      // create subscription
-      const subscription = VechainBlockchain.createTransferSubscription(
-        web3,
-        addr
-      );
-
-      // add to hash table
-      if (!(addr in address)) address[addr] = subscription;
-
-      console.log("The addresses", address);
-    });
+    // build fake subscription service
+    FakeVechainSubscription.buildFakeSubscriptions(web3);
   })
   .catch(err => console.log(error(err)));
 
