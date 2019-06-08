@@ -15,8 +15,6 @@ VechainBlockchain.createTransferSubscription = function (web3, addr) {
         (error, result) => {
             if (error) {
                 console.log(error(error));
-            } else {
-                console.log(result);
             }
         }
     );
@@ -31,14 +29,13 @@ VechainBlockchain.createTransferSubscription = function (web3, addr) {
 };
 
 VechainBlockchain.updateDatabaseUserBalance = async function (addr, value) {
+    // error check
     const user = await User.findOne({ address: addr });
     if (!user) {
       throw new Error("Public address does not exist");
     }
 
-    console.log("address", addr);
-    console.log("balance", value);
-
+    // update
     await User.updateOne(
         {
             address: addr
