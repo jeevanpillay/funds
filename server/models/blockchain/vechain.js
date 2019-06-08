@@ -8,7 +8,7 @@
  */
 
 // imports
-const User = require("../models/User");
+const User = require("../user/user");
 
 // VechainHDKey functions
 function VechainBlockchain() {}

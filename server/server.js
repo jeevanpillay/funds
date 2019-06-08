@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const chalk = require("chalk");
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
-const VechainBlockchain = require("./blockchain/vechain");
+const VechainBlockchain = require("./models/blockchain/vechain");
 
 // Configure chalk
 const error = chalk.bold.red;
@@ -23,7 +23,7 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
 
 // Mongoose Models
-const User = require("./models/User");
+const User = require("./models/user/user");
 
 // Create Schemas
 const { typeDefs } = require("./schema");
