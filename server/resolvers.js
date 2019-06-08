@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt/bcrypt");
-const hdkey = require("./vechainhdkey");
+const hdkey = require("./blockchain/vechainhdkey");
 
 // Vechain HDKey configurations
 const mnemonic = hdkey.getMnemonic();
