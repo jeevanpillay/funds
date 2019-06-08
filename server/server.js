@@ -8,7 +8,6 @@ const chalk = require("chalk");
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
 const VechainBlockchain = require("./blockchain/vechain");
-const FakeVechainSubscription = require('./blockchain/fakeSubscription');
 
 // Configure chalk
 const error = chalk.bold.red;
@@ -36,8 +35,8 @@ mongoose
   .then(() => {
     console.log(success(`Connected to ${connection("MongoDB")}!`));
 
-    // build fake subscription service
-    FakeVechainSubscription.buildFakeSubscriptions(web3);
+    // creating a fake service
+    VechainBlockchain.createWatchServiceFake(web3);
   })
   .catch(err => console.log(error(err)));
 
