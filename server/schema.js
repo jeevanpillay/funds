@@ -40,6 +40,7 @@ exports.typeDefs = gql`
     amount: Int!
     time: String
     confirmations: Int
+    address: String!
   }
 
   type Deposit {
@@ -47,5 +48,6 @@ exports.typeDefs = gql`
     amount: Int!
     time: String
     confirmations: Int
+    address: String!
   }
 `

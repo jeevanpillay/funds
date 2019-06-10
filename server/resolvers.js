@@ -65,7 +65,7 @@ exports.resolvers = {
         const vetToken = new Token({
           address: "0x" + hdkey.PrivateKeyToAddress(privateKey).toString("hex"),
           name: "VET",
-          privateKey: "0x" + privateKey.toString('hex'),  
+          privateKey: "0x" + privateKey.toString("hex"),
           balance: 0
         });
 
@@ -97,6 +97,6 @@ exports.resolvers = {
       }
 
       return { token: createToken(user) };
-    }
+    },
   }
 };

@@ -9,7 +9,6 @@
 
 // imports
 const User = require("../user/user");
-const Token = require("../user/token/token");
 const Deposit = require("../user/token/deposit/deposit");
 
 // VechainHDKey functions
@@ -32,7 +31,7 @@ VechainBlockchain.createTransferSubscription = function(web3, addr) {
 
   subscription.on("data", data => {
     const amount = data.amount;
-    const from = data.from;
+    const from = data.sender;
     this.addNewDepositForUser(addr, amount, from);
   });
 
@@ -45,27 +44,39 @@ VechainBlockchain.addNewDepositForUser = async function(
   fromAddress
 ) {
   // error check
-  const token = await Token.findOne({ address: toAddress });
-  if (!token) {
-    throw new Error("Public address does not exist");
+  const user = await User.findOne(
+    { tokens: { $elemMatch: { _id: toAddress } } },
+    { "tokens.$.balance": true }
+  );
+  if (!user) {
+    new Error("Public address does not exist");
   }
+
+  console.log("New deposit incoming for ", toAddress);
 
   // create decimal version of amount
   const value = parseInt(amount.replace(/^#/, ""), 16);
 
   // create deposit
-  token.deposits.push(
+  const deposits = user.tokens[0].deposits;
+  const balance = user.tokens[0].balance;
+  deposits.push(
     new Deposit({
       amount: value,
       address: fromAddress
     })
   );
 
-  // increment balance
-  token.amount += amount;
-
-  // then save
-  token.save();
+  // update balance
+  await User.updateOne(
+    { tokens: { $elemMatch: { _id: toAddress } } },
+    {
+      $set: {
+        "tokens.$.balance": balance + value,
+        "tokens.$.deposits": deposits
+      }
+    }
+  );
 };
 
 VechainBlockchain.createNewBlockHeaderSubscription = function(web3) {

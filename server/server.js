@@ -80,7 +80,9 @@ const server = new ApolloServer({
   context: ({ req }) => ({ 
     Token,
     User, 
-    currentUser: req.currentUser
+    currentUser: req.currentUser,
+    Withdrawal,
+    Deposit
    })
 });
 server.applyMiddleware({ app });
