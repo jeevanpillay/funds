@@ -55,7 +55,7 @@ VechainHDKey.createMasterPrivateKey = function (root) {
 };
 
 VechainHDKey.derivePrivateKeyByIndex = function (root, index) {
-  if (index === null) {
+  if (index === null || root === null) {
     return null;
   }
 

@@ -7,6 +7,7 @@ const {
   passwordValidator,
   keyValidator
 } = require("./user.validator");
+const Token = require("./token/token").Schema;
 
 const UserSchema = new Schema({
   username: {
@@ -31,28 +32,13 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now()
   },
-  privateKey: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  address: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  balance: {
-    type: Number,
-    default: 0
-  },
   tokens: {
-    type: [String],
-    ref: "Token"
-  },
-//   investment: {
-//     type: [mongoose.Schema.Types.ObjectId],
-//     ref: "Investment"
-//   }
+    type: [Token]
+  }
+  //   investment: {
+  //     type: [mongoose.Schema.Types.ObjectId],
+  //     ref: "Investment"
+  //   }
 });
 
 UserSchema.pre("save", function(next) {

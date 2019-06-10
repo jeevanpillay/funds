@@ -24,6 +24,10 @@ const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
 
 // Mongoose Models
 const User = require("./models/user/user");
+const Token = require("./models/user/token/token");
+const Withdrawal = require("./models/user/token/withdrawal/withdrawal");
+const Deposit = require("./models/user/token/deposit/deposit");
+const Investment = require("./models/user/investment/investment");
 
 // Create Schemas
 const { typeDefs } = require("./schema");
@@ -73,7 +77,11 @@ app.use(async (req, res, next) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ User, currentUser: req.currentUser })
+  context: ({ req }) => ({ 
+    Token,
+    User, 
+    currentUser: req.currentUser
+   })
 });
 server.applyMiddleware({ app });
 

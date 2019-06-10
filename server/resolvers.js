@@ -40,30 +40,50 @@ exports.resolvers = {
   },
 
   Mutation: {
-    signupUser: async (root, { username, email, password }, { User }) => {
+    signupUser: async (
+      root,
+      { username, email, password },
+      { User, Token }
+    ) => {
+      // check if user exists
       const user = await User.findOne({ username });
       if (user) {
         throw new Error("User already exists");
       }
 
+      // create private key
       const privateKey = hdkey.derivePrivateKeyByIndex(
         hdroot,
         await User.countDocuments()
       );
 
+      // ensure pk exists
       if (privateKey === null) {
-          throw new Error("Issue with creating account!");
+        throw new Error("Issue with creating account!");
+      } else {
+        // create token
+        const vetToken = new Token({
+          address: "0x" + hdkey.PrivateKeyToAddress(privateKey).toString("hex"),
+          name: "VET",
+          privateKey:
+            "0x" + hdkey.PrivateKeyToAddress(privateKey).toString("hex"),
+          balance: 0
+        });
+
+        // create the user
+        const newUser = await new User({
+          username,
+          email,
+          password
+        });
+
+        // insert vet token
+        newUser.tokens.push(vetToken);
+        newUser.save();
+
+        // create jwt
+        return { token: createToken(newUser) };
       }
-
-      const newUser = await new User({
-        username,
-        email,
-        password,
-        privateKey: "0x" + privateKey.toString('hex'),
-        address: "0x" + hdkey.PrivateKeyToAddress(privateKey).toString('hex')
-      }).save();
-
-      return { token: createToken(newUser) };
     },
 
     signinUser: async (root, { username, password }, { User }) => {

@@ -6,11 +6,11 @@ exports.typeDefs = gql`
   }
 
   type Mutation {
-    signupUser(username: String!, email: String!, password: String!): Token
-    signinUser(username:String!, password:String!): Token
+    signupUser(username: String!, email: String!, password: String!): AuthToken
+    signinUser(username:String!, password:String!): AuthToken
   }
 
-  type Token {
+  type AuthToken {
     token: String!
   }
 
@@ -22,6 +22,14 @@ exports.typeDefs = gql`
     joinDate: String
     privateKey: String!
     address: String!
+    balance: Int
+    tokens: [Token]
+  }
+
+  type Token {
+    _id: String!
+    name: String!
+    privateKey: String!
     balance: Int
   }
 `
