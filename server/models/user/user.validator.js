@@ -8,8 +8,8 @@ const nameValidator = [
   }),
   validate({
     validator: "isAlphanumeric",
-    message: 'Username should contain alpha-numeric characters only',
-})
+    message: "Username should contain alpha-numeric characters only"
+  })
 ];
 
 const emailValidator = [
@@ -28,7 +28,7 @@ const passwordValidator = [
 ];
 
 module.exports = {
-    passwordValidator,
-    emailValidator,
-    nameValidator
-}
+  passwordValidator,
+  emailValidator,
+  nameValidator
+};

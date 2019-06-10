@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 const assert = require("chai").assert;
 
-var User = require("../models/user/user");
+const User = require("../models/user/user");
 
 describe("The User schema should be ", function() {
   it("invalid if username is empty", function(done) {
@@ -64,28 +64,55 @@ describe("The User schema should be ", function() {
       done();
     });
   });
-});
 
-describe("The User schema's attribute joinDate", function() {
-  it("must be equal to the current date", function(done) {
+  it("password cannot be shorter than 6 characters", function(done) {
+    var u = new User({
+      password: "Doe"
+    });
+
+    u.validate(function(err) {
+      expect(err.errors.password).to.exist;
+      done();
+    });
+  });
+
+  it("password must be longer than 4 characters and shorter than 50 characters", function(done) {
+    var u = new User({
+      password: "Jackson"
+    });
+
+    u.validate(function(err) {
+      expect(err.errors.password).to.not.exist;
+      done();
+    });
+  });
+
+  it("password cannot be longer than 50 characters", function(done) {
+    var u = new User({
+        password: "JacksonJacksonJacksonJacksonJacksonJacksonJacksonJackson"
+    });
+
+    u.validate(function(err) {
+      expect(err.errors.username).to.exist;
+      done();
+    });
+  });
+
+  it("joinDate must be equal to the current date", function(done) {
     var u = new User();
 
     assert.equal(u.joinDate.Date, Date.now().Date);
     done();
   });
-});
 
-describe("The User schema's attribute balance", function() {
-  it("must be equal to 0 at default", function(done) {
+  it("balance must be equal to 0 at default", function(done) {
     var u = new User();
 
     assert.equal(u.balance, 0);
     done();
   });
-});
 
-describe("The User schema's attribute username", function() {
-  it("cannot be shorter than 4 characters", function(done) {
+  it("username cannot be shorter than 4 characters", function(done) {
     var u = new User({
       username: "Doe"
     });
@@ -96,7 +123,7 @@ describe("The User schema's attribute username", function() {
     });
   });
 
-  it("must be longer than 4 characters and shorter than 15 characters", function(done) {
+  it("username must be longer than 4 characters and shorter than 15 characters", function(done) {
     var u = new User({
       username: "Jackson"
     });
@@ -107,7 +134,7 @@ describe("The User schema's attribute username", function() {
     });
   });
 
-  it("cannot be longer than 15 characters", function(done) {
+  it("username cannot be longer than 15 characters", function(done) {
     var u = new User({
       username: "JacksonJacksonJackson"
     });
@@ -118,7 +145,7 @@ describe("The User schema's attribute username", function() {
     });
   });
 
-  it("cannot have whitespace", function(done) {
+  it("username cannot have whitespace", function(done) {
     var u = new User({
       username: "Jackson 123"
     });
@@ -129,7 +156,7 @@ describe("The User schema's attribute username", function() {
     });
   });
 
-  it("cannot have special characters", function(done) {
+  it("username cannot have special characters", function(done) {
     var u = new User({
       username: "Jackson$$"
     });
@@ -139,64 +166,36 @@ describe("The User schema's attribute username", function() {
       done();
     });
   });
-});
 
-describe("The User schema's attribute email", function() {
-    it("must fails if not in default email format", function(done) {
-        var u = new User({
-            email: "Jack"
-        });
-
-        u.validate(function(err) {
-            expect(err.errors.email).to.exist;
-            done();
-        })
+  it("username doesn't have trailing whitespaces", function(done) {
+    var u = new User({
+      username: "Jackson  "
     });
 
-    it("must pass if in default email format", function(done) {
-        var u = new User({
-            email: "jack@example.com"
-        });
+    assert.equal(u.username, "Jackson");
+    done();
+  });
 
-        u.validate(function(err) {
-            expect(err.errors.email).to.not.exist;
-            done();
-        })
+  it("email must fails if not in default email format", function(done) {
+    var u = new User({
+        email: "Jack"
     });
+
+    u.validate(function(err) {
+        expect(err.errors.email).to.exist;
+        done();
+    })
 });
 
-describe("The User schema's attribute password", function() {
-    it("cannot be shorter than 6 characters", function(done) {
-        var u = new User({
-          password: "Doe"
-        });
-    
-        u.validate(function(err) {
-          expect(err.errors.password).to.exist;
-          done();
-        });
-      });
-    
-      it("must be longer than 4 characters and shorter than 50 characters", function(done) {
-        var u = new User({
-          password: "Jackson"
-        });
-    
-        u.validate(function(err) {
-          expect(err.errors.password).to.not.exist;
-          done();
-        });
-      });
-    
-      it("cannot be longer than 50 characters", function(done) {
-        var u = new User({
-            password: "JacksonJacksonJacksonJacksonJacksonJacksonJacksonJackson"
-        });
+it("email must pass if in default email format", function(done) {
+    var u = new User({
+        email: "jack@example.com"
+    });
 
-        u.validate(function(err) {
-          expect(err.errors.username).to.exist;
-          done();
-        });
-      });
+    u.validate(function(err) {
+        expect(err.errors.email).to.not.exist;
+        done();
+    })
+});
 });
 
