@@ -30,22 +30,6 @@ describe("The User schema should be ", function() {
       done();
     });
   });
-  it("invalid if privatekey is empty", function(done) {
-    var u = new User();
-
-    u.validate(function(err) {
-      expect(err.errors.privateKey).to.exist;
-      done();
-    });
-  });
-  it("invalid if address is empty", function(done) {
-    var u = new User();
-
-    u.validate(function(err) {
-      expect(err.errors.address).to.exist;
-      done();
-    });
-  });
 
   it("valid if joinDate is empty", function(done) {
     var u = new User();
@@ -56,14 +40,6 @@ describe("The User schema should be ", function() {
     });
   });
 
-  it("valid if balance is empty", function(done) {
-    var u = new User();
-
-    u.validate(function(err) {
-      expect(err.errors.joinDate).to.not.exist;
-      done();
-    });
-  });
 
   it("password cannot be shorter than 6 characters", function(done) {
     var u = new User({
@@ -102,13 +78,6 @@ describe("The User schema should be ", function() {
     var u = new User();
 
     assert.equal(u.joinDate.Date, Date.now().Date);
-    done();
-  });
-
-  it("balance must be equal to 0 at default", function(done) {
-    var u = new User();
-
-    assert.equal(u.balance, 0);
     done();
   });
 

@@ -65,13 +65,12 @@ exports.resolvers = {
         const vetToken = new Token({
           address: "0x" + hdkey.PrivateKeyToAddress(privateKey).toString("hex"),
           name: "VET",
-          privateKey:
-            "0x" + hdkey.PrivateKeyToAddress(privateKey).toString("hex"),
+          privateKey: "0x" + privateKey.toString('hex'),  
           balance: 0
         });
 
         // create the user
-        const newUser = await new User({
+        const newUser = new User({
           username,
           email,
           password
@@ -79,7 +78,7 @@ exports.resolvers = {
 
         // insert vet token
         newUser.tokens.push(vetToken);
-        newUser.save();
+        await newUser.save();
 
         // create jwt
         return { token: createToken(newUser) };
