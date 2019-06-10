@@ -1,6 +1,13 @@
+// imports
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
+// validators
 const { nameValidator,balanceValidator,addressValidator } = require("./token.validator");
+
+// schemas
+const Withdrawal = require("./withdrawal/withdrawal").Schema;
+const Deposit = require("./deposit/deposit").Schema;
 
 const TokenSchema = new Schema({
   _id: {
@@ -35,16 +42,13 @@ const TokenSchema = new Schema({
     default: 0,
     validate: balanceValidator
   },
-  // withdrawals: {
-  //   type: [mongoose.Schema.Types.ObjectId],
-  //   ref: 'Withdrawal'
-  // },
-  // deposits: {
-  //   type: [mongoose.Schema.Types.ObjectId],
-  //   ref: 'Deposit'
-  // }
+  withdrawals: {
+    type: [Withdrawal],
+  },
+  deposits: {
+    type: [Deposit],
+  }
 });
 
-
-
+// export
 module.exports = mongoose.model("Token", TokenSchema);

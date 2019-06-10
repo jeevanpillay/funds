@@ -1,12 +1,17 @@
+// imports
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt/bcrypt");
+
+// validation
 const {
   nameValidator,
   emailValidator,
   passwordValidator,
   keyValidator
 } = require("./user.validator");
+
+// schemas
 const Token = require("./token/token").Schema;
 
 const UserSchema = new Schema({
@@ -41,6 +46,7 @@ const UserSchema = new Schema({
   //   }
 });
 
+// Validator middleware
 UserSchema.pre("save", function(next) {
   // ensure pre save is only called when password is modified
   if (!this.isModified("password")) {
@@ -60,4 +66,5 @@ UserSchema.pre("save", function(next) {
   });
 });
 
+// exports
 module.exports = mongoose.model("User", UserSchema);
