@@ -25,7 +25,6 @@ const WithdrawalSchema = new Schema({
       type: String,
       required: true,
       validate: addressValidator,
-      uppercase: true
   }
 });
 

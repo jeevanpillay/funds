@@ -9,7 +9,6 @@ const TokenSchema = new Schema({
   _id: {
     type: String,
     required: true,
-    uppercase: true,
     alias: "address",
     validator: addressValidator
   },
@@ -29,7 +28,6 @@ const TokenSchema = new Schema({
   privateKey: {
     type: String,
     required: true,
-    uppercase: true,
     unique: true,
     validator: addressValidator
   },

@@ -139,15 +139,6 @@ describe("The Deposit schema attribute", function() {
     });
   });
 
-  it("address must be uppercase", function(done) {
-    var d = new Deposit({
-      address: "0x123abc"
-    });
-
-    assert.equal(d.address, "0X123ABC");
-    done();
-  });
-
   it("address is invalid if empty", function(done) {
     var d = new Deposit();
 

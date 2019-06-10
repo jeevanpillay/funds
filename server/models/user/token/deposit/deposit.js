@@ -25,7 +25,6 @@ const DepositSchema = new Schema({
     type: String,
     required: true,
     validate: addressValidator,
-    uppercase: true
   }
 });
 

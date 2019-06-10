@@ -60,15 +60,6 @@ describe("The Token schema attribute", function() {
     });
   });
 
-  it("_id (address) must be uppercase", function(done) {
-    var t = new Token({
-      address: "0x123abc"
-    });
-
-    assert.equal(t._id, "0X123ABC");
-    done();
-  });
-
   it("privateKey must be alphanumeric", function(done) {
     var t = new Token({
         privateKey: "0x123abc"
@@ -78,15 +69,6 @@ describe("The Token schema attribute", function() {
       expect(err.errors.privateKey).to.not.exist;
       done();
     });
-  });
-
-  it("privateKey must be uppercase", function(done) {
-    var t = new Token({
-        privateKey: "0x123abc"
-    });
-
-    assert.equal(t.privateKey, "0X123ABC");
-    done();
   });
 
   it("name can only contain the recommended Token names (under enums)", function(done) {

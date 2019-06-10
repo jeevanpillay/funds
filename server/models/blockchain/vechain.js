@@ -9,6 +9,8 @@
 
 // imports
 const User = require("../user/user");
+const Token = require("../user/token/token");
+const Deposit = require("../user/token/deposit/deposit");
 
 // VechainHDKey functions
 function VechainBlockchain() {}
@@ -30,31 +32,40 @@ VechainBlockchain.createTransferSubscription = function(web3, addr) {
 
   subscription.on("data", data => {
     const amount = data.amount;
-    this.updateDatabaseUserBalance(addr, amount);
+    const from = data.from;
+    this.addNewDepositForUser(addr, amount, from);
   });
 
   return subscription;
 };
 
-VechainBlockchain.updateDatabaseUserBalance = async function(addr, amount) {
+VechainBlockchain.addNewDepositForUser = async function(
+  toAddress,
+  amount,
+  fromAddress
+) {
   // error check
-  const user = await User.findOne({ address: addr });
-  if (!user) {
+  const token = await Token.findOne({ address: toAddress });
+  if (!token) {
     throw new Error("Public address does not exist");
   }
 
   // create decimal version of amount
   const value = parseInt(amount.replace(/^#/, ""), 16);
 
-  // update
-  await User.updateOne(
-    {
-      address: addr
-    },
-    {
-      balance: user.balance + value
-    }
+  // create deposit
+  token.deposits.push(
+    new Deposit({
+      amount: value,
+      address: fromAddress
+    })
   );
+
+  // increment balance
+  token.amount += amount;
+
+  // then save
+  token.save();
 };
 
 VechainBlockchain.createNewBlockHeaderSubscription = function(web3) {
