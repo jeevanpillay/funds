@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 const assert = require("chai").assert;
 
-const User = require("../models/user/user");
+const User = require("./user");
 
 describe("The User schema should be ", function() {
   it("invalid if username is empty", function(done) {

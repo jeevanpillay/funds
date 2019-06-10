@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 const assert = require("chai").assert;
 
-const Token = require("../models/user/token/token");
+const Token = require("./token");
 
 describe("The Token schema attribute", function() {
   it("_id (address) is invalid if empty", function(done) {
