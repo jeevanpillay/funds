@@ -1,8 +1,11 @@
+// imports
 const expect = require("chai").expect;
 const assert = require("chai").assert;
 
+// model
 const User = require("./user");
 
+// test
 describe("The User schema should be ", function() {
   it("invalid if username is empty", function(done) {
     var u = new User();

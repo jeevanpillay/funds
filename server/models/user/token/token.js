@@ -5,10 +5,6 @@ const Schema = mongoose.Schema;
 // validators
 const { nameValidator,balanceValidator,addressValidator } = require("./token.validator");
 
-// schemas
-const Withdrawal = require("./withdrawal/withdrawal").Schema;
-const Deposit = require("./deposit/deposit").Schema;
-
 const TokenSchema = new Schema({
   _id: {
     type: String,
@@ -43,10 +39,12 @@ const TokenSchema = new Schema({
     validate: balanceValidator
   },
   withdrawals: {
-    type: [Withdrawal],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Withdrawal'
   },
   deposits: {
-    type: [Deposit],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Deposit' 
   }
 });
 

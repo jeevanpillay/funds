@@ -31,5 +31,21 @@ exports.typeDefs = gql`
     name: String!
     privateKey: String!
     balance: Int
+    withdrawals: [Withdrawal]
+    deposits: [Deposit]
+  }
+
+  type Withdrawal {
+    _id: ID
+    amount: Int!
+    time: String
+    confirmations: Int
+  }
+
+  type Deposit {
+    _id: ID
+    amount: Int!
+    time: String
+    confirmations: Int
   }
 `

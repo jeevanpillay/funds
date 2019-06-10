@@ -23,6 +23,7 @@ const addressValidator = [
     message: "Address should contain alpha-numeric characters only"
   })
 ];
+
 module.exports = {
   nameValidator,
   balanceValidator,
