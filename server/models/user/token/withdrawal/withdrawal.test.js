@@ -127,4 +127,33 @@ describe("The Withdrawal schema attribute", function() {
     assert.equal(w.time.Date, Date.now().Date);
     done();
   });
+
+  it("address must be alphanumeric", function(done) {
+    var w = new Withdrawal({
+      address: "0x123abc"
+    });
+
+    w.validate(function(err) {
+      expect(err.errors.address).to.not.exist;
+      done();
+    });
+  });
+
+  it("address must be uppercase", function(done) {
+    var w = new Withdrawal({
+      address: "0x123abc"
+    });
+
+    assert.equal(w.address, "0X123ABC");
+    done();
+  });
+
+  it("address is invalid if empty", function(done) {
+    var w = new Withdrawal();
+
+    w.validate(function(err) {
+      expect(err.errors.address).to.exist;
+      done();
+    });
+  });
 });

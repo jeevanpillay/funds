@@ -18,7 +18,15 @@ const confirmationsValidator = [
   })
 ];
 
+const addressValidator = [
+    validate({
+      validator: "isAlphanumeric",
+      message: "Address should contain alpha-numeric characters only"
+    })
+  ];
+
 module.exports = {
     amountValidator, 
-    confirmationsValidator
+    confirmationsValidator,
+    addressValidator
 };

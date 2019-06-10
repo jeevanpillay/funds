@@ -127,4 +127,33 @@ describe("The Deposit schema attribute", function() {
     assert.equal(d.time.Date, Date.now().Date);
     done();
   });
+
+  it("address must be alphanumeric", function(done) {
+    var d = new Deposit({
+      address: "0x123abc"
+    });
+
+    d.validate(function(err) {
+      expect(err.errors.address).to.not.exist;
+      done();
+    });
+  });
+
+  it("address must be uppercase", function(done) {
+    var d = new Deposit({
+      address: "0x123abc"
+    });
+
+    assert.equal(d.address, "0X123ABC");
+    done();
+  });
+
+  it("address is invalid if empty", function(done) {
+    var d = new Deposit();
+
+    d.validate(function(err) {
+      expect(err.errors.address).to.exist;
+      done();
+    });
+  });
 });
