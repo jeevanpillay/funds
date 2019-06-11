@@ -1,56 +1,18 @@
-const { gql } = require('apollo-server')
+const { gql } = require("apollo-server");
 
-exports.typeDefs = gql`
+const user = require("./models/user/user.schema");
+const token = require("./models/user/token/token.schema");
+const withdraw = require("./models/user/token/withdrawal/withdrawal.schema");
+const deposit = require("./models/user/token/deposit/deposit.schema");
+
+const root = gql`
   type Query {
-    getCurrentUser: User
-    getUserWithdrawals(username: String!, address: String!): [Withdrawal]
-    getUserDeposits(username: String!, address: String!): [Deposit]
+    root: String
   }
 
   type Mutation {
-    signupUser(username: String!, email: String!, password: String!): AuthToken
-    signinUser(username:String!, password:String!): AuthToken
-    withdrawFunds(username: String!, addressFrom: String!, addressTo: String!, amount: Int!): Boolean
+    root: String
   }
+`;
 
-  type AuthToken {
-    token: String!
-  }
-
-  type User {
-    _id: ID
-    username: String!
-    password: String!
-    email: String!
-    joinDate: String
-    privateKey: String!
-    address: String!
-    balance: Int
-    tokens: [Token]
-  }
-
-  type Token {
-    _id: String!
-    name: String!
-    privateKey: String!
-    balance: Int
-    withdrawals: [Withdrawal]
-    deposits: [Deposit]
-  }
-
-  type Withdrawal {
-    _id: ID
-    amount: Int!
-    time: String
-    confirmations: Int
-    address: String!
-  }
-
-  type Deposit {
-    _id: ID
-    amount: Int!
-    time: String
-    confirmations: Int
-    address: String!
-  }
-`
+module.exports = [root, user, token, withdraw, deposit];

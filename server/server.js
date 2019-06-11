@@ -9,7 +9,7 @@ const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
 const VechainBlockchain = require("./models/blockchain/vechain");
 
-// Configure chalk
+// Configure Chalk
 const error = chalk.bold.red;
 const success = chalk.bold.green;
 const connection = chalk.bold.magenta;
@@ -30,8 +30,8 @@ const Deposit = require("./models/user/token/deposit/deposit");
 const Investment = require("./models/user/investment/investment");
 
 // Create Schemas
-const { typeDefs } = require("./schema");
-const { resolvers } = require("./resolvers");
+const typeDefs = require("./schema");
+const  resolvers = require("./resolvers");
 
 // connect to database
 mongoose
