@@ -3,6 +3,8 @@ const { gql } = require('apollo-server')
 exports.typeDefs = gql`
   type Query {
     getCurrentUser: User
+    getUserWithdrawals(username: String!, address: String!): [Withdrawal]
+    getUserDeposits(username: String!, address: String!): [Deposit]
   }
 
   type Mutation {
