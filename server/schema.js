@@ -8,6 +8,7 @@ exports.typeDefs = gql`
   type Mutation {
     signupUser(username: String!, email: String!, password: String!): AuthToken
     signinUser(username:String!, password:String!): AuthToken
+    withdrawFunds(username: String!, addressFrom: String!, addressTo: String!, amount: Int!): Boolean
   }
 
   type AuthToken {

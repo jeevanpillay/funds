@@ -38,11 +38,7 @@ VechainBlockchain.createTransferSubscription = function(web3, addr) {
   return subscription;
 };
 
-VechainBlockchain.addNewDepositForUser = async function(
-  toAddress,
-  amount,
-  fromAddress
-) {
+VechainBlockchain.addNewDepositForUser = async function(toAddress, amount, fromAddress) {
   // error check
   const user = await User.findOne(
     { tokens: { $elemMatch: { _id: toAddress } } },
@@ -52,14 +48,12 @@ VechainBlockchain.addNewDepositForUser = async function(
     new Error("Public address does not exist");
   }
 
-  console.log("New deposit incoming for ", toAddress);
-
-  // create decimal version of amount
-  const value = parseInt(amount.replace(/^#/, ""), 16);
-
   // create deposit
-  const deposits = user.tokens[0].deposits;
-  const balance = user.tokens[0].balance;
+  const value = parseInt(amount.replace(/^#/, ""), 16);
+  const balance = user.tokens[0].balance + value;
+  var deposits = user.tokens[0].deposits;
+
+  // create the deposit
   deposits.push(
     new Deposit({
       amount: value,
@@ -72,7 +66,7 @@ VechainBlockchain.addNewDepositForUser = async function(
     { tokens: { $elemMatch: { _id: toAddress } } },
     {
       $set: {
-        "tokens.$.balance": balance + value,
+        "tokens.$.balance": balance,
         "tokens.$.deposits": deposits
       }
     }
