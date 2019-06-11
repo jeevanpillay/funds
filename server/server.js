@@ -7,9 +7,9 @@ const jwt = require("jsonwebtoken");
 const chalk = require("chalk");
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
-const VechainBlockchain = require("./blockchain/vechain");
+const VechainBlockchain = require("./models/blockchain/vechain");
 
-// Configure chalk
+// Configure Chalk
 const error = chalk.bold.red;
 const success = chalk.bold.green;
 const connection = chalk.bold.magenta;
@@ -23,11 +23,15 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
 
 // Mongoose Models
-const User = require("./models/User");
+const User = require("./models/user/user");
+const Token = require("./models/user/token/token");
+const Withdrawal = require("./models/user/token/withdrawal/withdrawal");
+const Deposit = require("./models/user/token/deposit/deposit");
+const Investment = require("./models/user/investment/investment");
 
 // Create Schemas
-const { typeDefs } = require("./schema");
-const { resolvers } = require("./resolvers");
+const typeDefs = require("./schema");
+const resolvers = require("./resolvers");
 
 // connect to database
 mongoose
@@ -35,34 +39,8 @@ mongoose
   .then(() => {
     console.log(success(`Connected to ${connection("MongoDB")}!`));
 
-    // Setup address
-    let address = {};
-
-    // Setup filters and options for the watch
-    const pipeline = [
-      {
-        $match: {
-          operationType: "insert"
-        }
-      }
-    ];
-
-    // Create a watch to ensure that new users data are added to the address variable
-    User.watch(pipeline).on("change", data => {
-      // destructure address
-      const addr = data.fullDocument.address;
-
-      // create subscription
-      const subscription = VechainBlockchain.createTransferSubscription(
-        web3,
-        addr
-      );
-
-      // add to hash table
-      if (!(addr in address)) address[addr] = subscription;
-
-      console.log("The addresses", address);
-    });
+    // creating a fake service
+    VechainBlockchain.createWatchServiceFake(web3);
   })
   .catch(err => console.log(error(err)));
 
@@ -99,9 +77,15 @@ app.use(async (req, res, next) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ User, currentUser: req.currentUser })
+  context: ({ req }) => ({
+    Token,
+    User,
+    currentUser: req.currentUser,
+    Withdrawal,
+    Deposit
+  })
 });
-server.applyMiddleware({ app });
+server.applyMiddleware({ app })
 
 // Listen to the Port
 app.listen(PORT, () => {

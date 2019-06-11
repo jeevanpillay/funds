@@ -1,27 +1,18 @@
-const { gql } = require('apollo-server')
+const { gql } = require("apollo-server");
 
-exports.typeDefs = gql`
+const user = require("./models/user/user.schema");
+const token = require("./models/user/token/token.schema");
+const withdraw = require("./models/user/token/withdrawal/withdrawal.schema");
+const deposit = require("./models/user/token/deposit/deposit.schema");
+
+const root = gql`
   type Query {
-    getCurrentUser: User
+    root: String
   }
 
   type Mutation {
-    signupUser(username: String!, email: String!, password: String!): Token
-    signinUser(username:String!, password:String!): Token
+    root: String
   }
+`;
 
-  type Token {
-    token: String!
-  }
-
-  type User {
-    _id: ID
-    username: String!
-    password: String!
-    email: String!
-    joinDate: String
-    privateKey: String!
-    address: String!
-    balance: Int
-  }
-`
+module.exports = [root, user, token, withdraw, deposit];
