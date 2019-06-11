@@ -6,145 +6,153 @@ const assert = require("chai").assert;
 const Deposit = require("./deposit");
 
 // test
-describe("The Deposit schema attribute", function() {
-  it("amount is invalid if empty", function(done) {
-    var d = new Deposit();
+describe("Deposit schema", function() {
+  describe("Amount", () => {
+    it("is invalid if empty", function(done) {
+      var d = new Deposit();
 
-    d.validate(function(err) {
-      expect(err.errors.amount).to.exist;
-      done();
-    });
-  });
-
-  it("confirmations is valid if empty", function(done) {
-    var d = new Deposit();
-
-    d.validate(function(err) {
-      expect(err.errors.confirmations).to.not.exist;
-      done();
-    });
-  });
-
-  it("time is valid if empty", function(done) {
-    var d = new Deposit();
-
-    d.validate(function(err) {
-      expect(err.errors.time).to.not.exist;
-      done();
-    });
-  });
-
-  it("amount cannot be 0", function(done) {
-    var d = new Deposit({
-      amount: 0
-    });
-
-    d.validate(function(err) {
+      d.validate(function(err) {
         expect(err.errors.amount).to.exist;
         done();
-    })
-  });
-
-  it("amount cannot be less than 0", function(done) {
-    var d = new Deposit({
-      amount: -1
+      });
     });
 
-    d.validate(function(err) {
+    it("cannot be 0", function(done) {
+      var d = new Deposit({
+        amount: 0
+      });
+
+      d.validate(function(err) {
         expect(err.errors.amount).to.exist;
         done();
-    })
+      });
+    });
+
+    it("cannot be less than 0", function(done) {
+      var d = new Deposit({
+        amount: -1
+      });
+
+      d.validate(function(err) {
+        expect(err.errors.amount).to.exist;
+        done();
+      });
+    });
+
+    it("must be more than 0", function(done) {
+      var d = new Deposit({
+        amount: 1
+      });
+
+      assert.equal(d.amount, 1);
+      done();
+    });
+
+    it("can be an arbitrary number more than 0", function(done) {
+      var d = new Deposit({
+        amount: 1
+      });
+      assert.equal(d.amount, 1);
+
+      var d = new Deposit({
+        amount: 10
+      });
+      assert.equal(d.amount, 10);
+
+      var d = new Deposit({
+        amount: 10000
+      });
+      assert.equal(d.amount, 10000);
+
+      done();
+    });
   });
 
-  it("amount must be more than 0", function(done) {
-    var d = new Deposit({
-      amount: 1
+  describe("Confirmations", () => {
+    it("is valid if empty", function(done) {
+      var d = new Deposit();
+
+      d.validate(function(err) {
+        expect(err.errors.confirmations).to.not.exist;
+        done();
+      });
     });
 
-    assert.equal(d.amount, 1);
-    done();
-  });
+    it("cannot be less than 0", function(done) {
+      var d = new Deposit({
+        confirmations: -1
+      });
 
-  it("amount can be an arbitrary number more than 0", function(done) {
-    var d = new Deposit({
-      amount: 1
-    });
-    assert.equal(d.amount, 1);
-
-    var d = new Deposit({
-      amount: 10
-    });
-    assert.equal(d.amount, 10);
-
-    var d = new Deposit({
-      amount: 10000
-    });
-    assert.equal(d.amount, 10000);
-
-    done();
-  });
-
-  it("confirmations cannot be less than 0", function(done) {
-    var d = new Deposit({
-      confirmations: -1
-    });
-
-    d.validate(function(err) {
+      d.validate(function(err) {
         expect(err.errors.confirmations).to.exist;
         done();
-    })
-  });
+      });
+    });
 
-  it("confirmations defaults to 0", function(done) {
-    var d = new Deposit();
+    it("defaults to 0", function(done) {
+      var d = new Deposit();
 
-    assert.equal(d.confirmations, 0);
-    done();
-  });
+      assert.equal(d.confirmations, 0);
+      done();
+    });
 
-  it("confirmations can be an arbitrary number more than and equal to 0", function(done) {
-    var d = new Deposit({
+    it("can be an arbitrary number more than and equal to 0", function(done) {
+      var d = new Deposit({
         confirmations: 1
-    });
-    assert.equal(d.confirmations, 1);
+      });
+      assert.equal(d.confirmations, 1);
 
-    var d = new Deposit({
+      var d = new Deposit({
         confirmations: 10
-    });
-    assert.equal(d.confirmations, 10);
+      });
+      assert.equal(d.confirmations, 10);
 
-    var d = new Deposit({
+      var d = new Deposit({
         confirmations: 100
-    });
-    assert.equal(d.confirmations, 100);
+      });
+      assert.equal(d.confirmations, 100);
 
-    done();
-  });
-
-  it("time defaults current date", function(done) {
-    var d = new Deposit();
-
-    assert.equal(d.time.Date, Date.now().Date);
-    done();
-  });
-
-  it("address must be alphanumeric", function(done) {
-    var d = new Deposit({
-      address: "0x123abc"
-    });
-
-    d.validate(function(err) {
-      expect(err.errors.address).to.not.exist;
       done();
     });
   });
 
-  it("address is invalid if empty", function(done) {
-    var d = new Deposit();
+  describe("Time", () => {
+    it("is valid if empty", function(done) {
+      var d = new Deposit();
 
-    d.validate(function(err) {
-      expect(err.errors.address).to.exist;
+      d.validate(function(err) {
+        expect(err.errors.time).to.not.exist;
+        done();
+      });
+    });
+
+    it("defaults current date", function(done) {
+      var d = new Deposit();
+
+      assert.equal(d.time.Date, Date.now().Date);
       done();
+    });
+  });
+
+  describe("Address", () => {
+    it("must be alphanumeric", function(done) {
+      var d = new Deposit({
+        address: "0x123abc"
+      });
+
+      d.validate(function(err) {
+        expect(err.errors.address).to.not.exist;
+        done();
+      });
+    });
+
+    it("is invalid if empty", function(done) {
+      var d = new Deposit();
+
+      d.validate(function(err) {
+        expect(err.errors.address).to.exist;
+        done();
+      });
     });
   });
 });
