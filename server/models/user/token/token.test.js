@@ -38,7 +38,16 @@ describe("The Token schema attribute", function() {
         done();
       });
     });
+    it("cannot be shorter than 3 characters", function(done) {
+      var t = new Token({
+        name: "EC"
+      });
 
+      t.validate(function(err) {
+        expect(err.errors.name).to.exist;
+        done();
+      });
+    });
     it("defaults to VET if empty", function(done) {
       var t = new Token();
       assert.equal(t.name, "VET");
@@ -81,18 +90,6 @@ describe("The Token schema attribute", function() {
     });
   });
 
-
-  it("cannot be shorter than 3 characters", function(done) {
-    var t = new Token({
-      name: "EC"
-    });
-
-    t.validate(function(err) {
-      expect(err.errors.name).to.exist;
-      done();
-    });
-  });
-
   describe("Private Key", () => {
     it("is invalid if empty", function(done) {
       var t = new Token();
@@ -124,36 +121,33 @@ describe("The Token schema attribute", function() {
       });
     });
 
+    it("should be more than 0", function(done) {
+      // test lower boundary
+      var t = new Token({
+        balance: -1
+      });
 
-  it("should be more than 0", function(done) {
-    // test lower boundary
-    var t = new Token({
-      balance: -1
-    });
+      t.validate(function(err) {
+        expect(err.errors.balance).to.exist;
+      });
 
-    t.validate(function(err) {
-      expect(err.errors.balance).to.exist;
-    });
+      // test
+      var t = new Token({
+        balance: 0
+      });
+      t.validate(function(err) {
+        expect(err.errors.balance).to.not.exist;
+      });
 
-    // test
-    var t = new Token({
-      balance: 0
-    });
-    t.validate(function(err) {
-      expect(err.errors.balance).to.not.exist;
-    });
+      // test upper boundary
+      var t = new Token({
+        balance: 1
+      });
+      t.validate(function(err) {
+        expect(err.errors.balance).to.not.exist;
+      });
 
-    // test upper boundary
-    var t = new Token({
-      balance: 1
+      done();
     });
-    t.validate(function(err) {
-      expect(err.errors.balance).to.not.exist;
-    });
-
-    done();
   });
-  });
-
-
 });

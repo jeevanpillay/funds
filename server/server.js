@@ -31,7 +31,7 @@ const Investment = require("./models/user/investment/investment");
 
 // Create Schemas
 const typeDefs = require("./schema");
-const  resolvers = require("./resolvers");
+const resolvers = require("./resolvers");
 
 // connect to database
 mongoose
@@ -77,15 +77,15 @@ app.use(async (req, res, next) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ 
+  context: ({ req }) => ({
     Token,
-    User, 
+    User,
     currentUser: req.currentUser,
     Withdrawal,
     Deposit
-   })
+  })
 });
-server.applyMiddleware({ app });
+server.applyMiddleware({ app })
 
 // Listen to the Port
 app.listen(PORT, () => {

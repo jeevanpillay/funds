@@ -20,9 +20,6 @@ const user = gql`
     password: String!
     email: String!
     joinDate: String
-    privateKey: String!
-    address: String!
-    balance: Int
     tokens: [Token]
   }
 `;
