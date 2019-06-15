@@ -7,8 +7,7 @@ const bcrypt = require("bcrypt/bcrypt");
 const {
   nameValidator,
   emailValidator,
-  passwordValidator,
-  keyValidator
+  passwordValidator
 } = require("./user.validator");
 
 // schemas
