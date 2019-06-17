@@ -8,7 +8,6 @@ const {
   nameValidator,
   emailValidator,
   passwordValidator,
-  keyValidator
 } = require("./user.validator");
 
 // schemas
@@ -40,14 +39,10 @@ const UserSchema = new Schema({
   tokens: {
     type: [Token]
   }
-  //   investment: {
-  //     type: [mongoose.Schema.Types.ObjectId],
-  //     ref: "Investment"
-  //   }
 });
 
 // Validator middleware
-UserSchema.pre("save", function(next) {
+UserSchema.pre("save", function (next) {
   // ensure pre save is only called when password is modified
   if (!this.isModified("password")) {
     return next();

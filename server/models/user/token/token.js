@@ -43,6 +43,10 @@ const TokenSchema = new Schema({
   deposits: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Deposit' 
+  },
+  investment: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Investment"
   }
 });
 

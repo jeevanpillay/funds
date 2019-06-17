@@ -27,7 +27,7 @@ const User = require("./models/user/user");
 const Token = require("./models/user/token/token");
 const Withdrawal = require("./models/user/token/withdrawal/withdrawal");
 const Deposit = require("./models/user/token/deposit/deposit");
-const Investment = require("./models/user/investment/investment");
+const Investment = require("./models/user/token/investment/investment");
 
 // Create Schemas
 const typeDefs = require("./schema");
@@ -82,7 +82,8 @@ const server = new ApolloServer({
     User,
     currentUser: req.currentUser,
     Withdrawal,
-    Deposit
+    Deposit,
+    Investment
   })
 });
 server.applyMiddleware({ app })
