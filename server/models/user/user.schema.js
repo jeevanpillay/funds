@@ -6,8 +6,8 @@ const user = gql`
   }
 
   extend type Mutation {
-    signupUser(username: String!, email: String!, password: String!): AuthToken
-    signinUser(username: String!, password: String!): AuthToken
+    register(username: String!, email: String!, password: String!): AuthToken
+    login(username: String!, password: String!): AuthToken
   }
 
   type AuthToken {

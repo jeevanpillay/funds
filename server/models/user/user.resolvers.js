@@ -39,7 +39,7 @@ exports.resolvers = {
     }
   },
   Mutation: {
-    signupUser: async (
+    register: async (
       root,
       { username, email, password },
       { User, Token }
@@ -84,7 +84,7 @@ exports.resolvers = {
       }
     },
 
-    signinUser: async (root, { username, password }, { User }) => {
+    login: async (root, { username, password }, { User }) => {
       const user = await User.findOne({ username });
       if (!user) {
         throw new Error("Invalid Username");
