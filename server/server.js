@@ -7,7 +7,20 @@ const jwt = require("jsonwebtoken");
 const chalk = require("chalk");
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
-const VechainBlockchain = require("./models/blockchain/vechain");
+const VechainBlockchain = require("./model/blockchain/vechain");
+
+// Import Mongoose and GraphQL essentials
+const typeDefs = require("./model/schemas");
+const resolvers = require("./model/resolvers");
+const [ 
+  User, 
+  Token, 
+  Withdrawal, 
+  Deposit, 
+  Investment, 
+  Game, 
+  GameHashes 
+] = require("./model/models");
 
 // Configure Chalk
 const error = chalk.bold.red;
@@ -21,19 +34,6 @@ require("dotenv").config({
 const PORT = process.env.PORT || 4444;
 const NODE_ENV = process.env.NODE_ENV || "development";
 const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
-
-// Mongoose Models
-const User = require("./models/user/user");
-const Token = require("./models/user/token/token");
-const Withdrawal = require("./models/user/token/withdrawal/withdrawal");
-const Deposit = require("./models/user/token/deposit/deposit");
-const Investment = require("./models/user/token/investment/investment");
-const Game = require("./models/user/token/game/game");
-const GameHashes = require("./models/user/token/game/gamehashes/gamehashes");
-
-// Create Schemas
-const typeDefs = require("./schema");
-const resolvers = require("./resolvers");
 
 // connect to database
 mongoose
@@ -80,14 +80,14 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => ({
-    Token,
-    User,
     currentUser: req.currentUser,
+    User,
+    Token,
     Withdrawal,
     Deposit,
-    Investment,
-    Game,
-    GameHashes
+    Investment, 
+    Game, 
+    GameHashes 
   })
 });
 server.applyMiddleware({ app })
