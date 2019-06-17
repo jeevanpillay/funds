@@ -8,6 +8,8 @@ const token = gql`
     balance: Int
     withdrawals: [Withdrawal]
     deposits: [Deposit]
+    investment: Investment
+    games: [Game]
   }
 `;
 

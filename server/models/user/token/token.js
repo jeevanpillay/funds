@@ -38,14 +38,21 @@ const TokenSchema = new Schema({
   },
   withdrawals: {
     type: [mongoose.Schema.Types.ObjectId],
+    default: [],
     ref: 'Withdrawal'
   },
   deposits: {
     type: [mongoose.Schema.Types.ObjectId],
+    default: [],
     ref: 'Deposit' 
   },
-  investment: {
+  games: {
     type: [mongoose.Schema.Types.ObjectId],
+    default: [],
+    ref: 'Game' 
+  },
+  investment: {
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Investment"
   }
 });
