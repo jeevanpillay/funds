@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const {
   amountValidator,
+  multiplierValidator
 } = require("./game.validator");
 
 const GameSchema = new Schema({
@@ -17,12 +18,12 @@ const GameSchema = new Schema({
   bonus: {
     type: Number,
     default: 0,
-    validate: amountValidator
+    validate: multiplierValidator
   },
   multiplier: {
     type: Number,
     required: true,
-    validate: amountValidator
+    validate: multiplierValidator
   },
   hash: {
     type: mongoose.Schema.Types.ObjectId,

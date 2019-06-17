@@ -81,6 +81,7 @@ describe("User schema", function() {
       done();
     });
   });
+
   describe("Password", () => {
     it("invalid if empty", function(done) {
       var u = new User();
@@ -124,6 +125,7 @@ describe("User schema", function() {
       });
     });
   });
+
   describe("Email", () => {
     it("invalid if empty", function(done) {
       var u = new User();
@@ -156,6 +158,7 @@ describe("User schema", function() {
       });
     });
   });
+  
   describe("JoinDate", () => {
     it("valid if empty", function(done) {
       var u = new User();

@@ -111,6 +111,7 @@ describe("The Token schema attribute", function() {
       });
     });
   });
+  
   describe("Balance", () => {
     it("is valid if empty", function(done) {
       var t = new Token();
@@ -121,7 +122,7 @@ describe("The Token schema attribute", function() {
       });
     });
 
-    it("should be more than 0", function(done) {
+    it("should be more than or equal to 0", function(done) {
       // test lower boundary
       var t = new Token({
         balance: -1
