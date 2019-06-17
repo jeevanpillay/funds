@@ -45,7 +45,7 @@
     "server": "nodemon server.js",
     "client": "cd .. && cd client && yarn start",
     "dev": "concurrently --names \"server,client\" \"yarn run server --silent\" \"yarn run client --silent\"",
-    "test": "mocha 'models' --recursive"
+    "test": "mocha 'model' --recursive"
   },
   "author": "",
   "license": "ISC"

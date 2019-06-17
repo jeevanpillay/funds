@@ -5,7 +5,7 @@ const expect = require("chai").expect;
 const assert = require('chai').assert;
 
 // schema
-const typeDefs = require("../../../../schema");
+const typeDefs = require("../../../schemas");
 const deposit = require("./deposit.schema");
 
 // test

@@ -11,4 +11,12 @@ const Game = require("./user/token/game/game");
 const GameHashes = require("./user/token/game/gamehashes/gamehashes");
 
 // export
-module.exports = [User, Token, Withdrawal, Deposit, Investment, Game, GameHashes]
+module.exports = [
+    User, 
+    Token, 
+    Withdrawal, 
+    Deposit, 
+    Investment, 
+    Game, 
+    GameHashes
+]
