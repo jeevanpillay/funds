@@ -22,5 +22,6 @@ const GamesHashSchema = new Schema({
         ref: 'Game'
     }
 });
+
 // exports
 module.exports = mongoose.model("GamesHash", GamesHashSchema);

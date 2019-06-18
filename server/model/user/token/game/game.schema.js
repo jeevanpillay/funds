@@ -7,7 +7,7 @@ const game = gql`
     time: String
     bonus: Int
     multiplier: Int!
-    hash: String!
+    hash: GamesHash!
   }
 `;
 
