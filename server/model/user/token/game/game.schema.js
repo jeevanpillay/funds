@@ -20,6 +20,8 @@ const game = gql`
       hash: String!
       multiplier: Float!
     ): Boolean
+
+    endGame(hash: String!, users: [String]!): Boolean
   }
 
   extend type Query {
