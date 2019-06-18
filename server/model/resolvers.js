@@ -5,6 +5,7 @@ const merge = require('lodash').merge;
 const user = require('./user/user.resolvers').resolvers;
 const withdrawal = require('./user/token/withdrawal/withdrawal.resolvers').resolvers;
 const deposit = require('./user/token/deposit/deposit.resolvers').resolvers;
+const game = require('./user/token/game/game.resolvers').resolvers;
 
 // Export
-module.exports = merge(user, withdrawal, deposit);
+module.exports = merge(user, withdrawal, deposit, game);

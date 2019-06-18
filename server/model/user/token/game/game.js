@@ -13,7 +13,7 @@ const GameSchema = new Schema({
   },
   time: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
   bonus: {
     type: Number,
@@ -23,7 +23,18 @@ const GameSchema = new Schema({
   multiplier: {
     type: Number,
     required: true,
-    validate: multiplierValidator
+    validate: multiplierValidator,
+    alias: "cashOut"
+  },
+  status: {
+    type: Boolean,
+    default: false,
+    alias: "hasEnded"
+  },
+  address: {
+    type: String,
+    required: true,
+    alias: "creatorAddress"
   },
   hash: {
     type: mongoose.Schema.Types.ObjectId,
