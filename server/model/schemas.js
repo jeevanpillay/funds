@@ -8,7 +8,7 @@ const token = require("./user/token/token.schema");
 const withdraw = require("./user/token/withdrawal/withdrawal.schema");
 const deposit = require("./user/token/deposit/deposit.schema");
 const game = require("./user/token/game/game.schema");
-const gamehashes = require("./user/token/game/gamehashes/gamehashes.schema");
+const gameshash = require("./user/token/game/gameshash/gameshash.schema");
 const investment = require("./user/token/investment/investment.schema");
 
 // root
@@ -30,6 +30,6 @@ module.exports = [
   withdraw, 
   deposit, 
   game, 
-  gamehashes,
+  gameshash,
   investment
 ];

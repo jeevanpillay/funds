@@ -10,8 +10,6 @@ const Thorify = require("thorify").thorify;
 const VechainBlockchain = require("./model/blockchain/vechain");
 const loop = require('./model/blockchain/populate.hash');
 
-loop().then(console.log());
-
 // Import Mongoose and GraphQL essentials
 const typeDefs = require("./model/schemas");
 const resolvers = require("./model/resolvers");
@@ -22,7 +20,7 @@ const [
   Deposit, 
   Investment, 
   Game, 
-  GameHashes 
+  GamesHash 
 ] = require("./model/models");
 
 // Configure Chalk
@@ -90,7 +88,7 @@ const server = new ApolloServer({
     Deposit,
     Investment, 
     Game, 
-    GameHashes 
+    GamesHash 
   })
 });
 server.applyMiddleware({ app })

@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const {
     crashValidator,
-  } = require("./gamehashes.validator");
+  } = require("./gameshash.validator");
   
-const GameHashesSchema = new Schema({
+const GamesHashSchema = new Schema({
     hash: {
         type: String,
         required: true,
@@ -23,4 +23,4 @@ const GameHashesSchema = new Schema({
     }
 });
 // exports
-module.exports = mongoose.model("GameHashes", GameHashesSchema);
+module.exports = mongoose.model("GamesHash", GamesHashSchema);

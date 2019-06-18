@@ -1,11 +1,11 @@
 const { gql } = require("apollo-server");
 
-const gamehashes = gql`
-  type GameHashes {
+const gameshash = gql`
+  type GamesHash {
     _id: String!
     crash: Int!
     games: [Game]
   }
 `;
 
-module.exports = gamehashes;
+module.exports = gameshash;
