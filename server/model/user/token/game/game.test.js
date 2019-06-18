@@ -1,6 +1,7 @@
 // imports
 const expect = require("chai").expect;
 const assert = require("chai").assert;
+const mongoose = require("mongoose");
 
 // model
 const Game = require("./game");
@@ -117,7 +118,7 @@ describe("Game schema", function () {
     });
 
     describe("Multiplier", function () {
-        it("is valid if empty", function (done) {
+        it("is invalid if empty", function (done) {
             var g = new Game();
 
             g.validate(function (err) {
@@ -126,7 +127,7 @@ describe("Game schema", function () {
             });
         });
 
-        it("should be more than 0", function (done) {
+        it("should be more than or equal to 0", function (done) {
             // test lower boundary
             var g = new Game({
                 multiplier: -1
@@ -192,6 +193,39 @@ describe("Game schema", function () {
             });
 
             done();
+        });
+    });
+
+    describe("GamesHash", function () {
+        it("is invalid if empty", function (done) {
+            let g = new Game();
+
+            g.validate(function (err) {
+                expect(err.errors.hash).to.exist;
+                done();
+            });
+        });
+
+        it("is valid if type ObjectID is supplied", function (done) {
+            let g = new Game({
+                hash: new mongoose.Types.ObjectId
+            });
+
+            g.validate(function (err) {
+                expect(err.errors.hash).to.not.exist;
+                done();
+            });
+        });
+
+        it("is invalid if type ObjectID is not supplied", function (done) {
+            let g = new Game({
+                hash: 1
+            });
+
+            g.validate(function (err) {
+                expect(err.errors.hash).to.exist;
+                done();
+            });
         });
     });
 });

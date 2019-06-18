@@ -27,6 +27,7 @@ const GameSchema = new Schema({
   },
   hash: {
     type: mongoose.Schema.Types.ObjectId,
+    required: true,
     ref: "GamesHash"
   }
 });

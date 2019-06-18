@@ -8,7 +8,6 @@ const chalk = require("chalk");
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
 const VechainBlockchain = require("./model/blockchain/vechain");
-const loop = require('./model/blockchain/populate.hash');
 
 // Import Mongoose and GraphQL essentials
 const typeDefs = require("./model/schemas");
