@@ -22,7 +22,8 @@ const bet = gql`
 
     closeBet(
       address: String!
-      multiplier: Float!
+      amount: Int!
+      betID: String!
     ): Bet
 
   }

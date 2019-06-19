@@ -31,6 +31,40 @@ exports.resolvers = {
       if (check.greater(0, amount)) throw new Error("Bet amount should be more than 0")
 
       // get user
+      let user = await User.findOne(
+        { tokens: { $elemMatch: { _id: address, name: "VET" } } },
+        { "tokens.balance": 1 }
+      );
+
+      // type check
+      if (!user) throw new Error("User's tokens with that address doesn't exists");
+      if (check.greaterOrEqual(amount, user.tokens[0].balance)) throw new Error("User doesn't have the required balance");
+
+      // create the Bet
+      let bet = await new Bet({
+        amount: amount,
+        multiplier: multiplier,
+        hash: new mongoose.Types.ObjectId,
+        address: address
+      });
+      
+      // get
+      let balance = user.tokens[0].balance;
+
+      // save to db
+      await User.updateOne(
+        { tokens: { $elemMatch: { _id: address, name: "VET" } } },
+        { $set: { "tokens.$.balance": balance - amount } }
+      );
+
+      // return
+      return bet;
+    },
+    closeBet: async (root, { address, amount, betID }, { User, Bet }) => {
+      // check inputs
+      if (check.greater(0, amount)) throw new Error("Bet amount should be more than 0")
+
+      // get user
       const user = await User.findOne({
         tokens: {
           $elemMatch: {
@@ -39,38 +73,22 @@ exports.resolvers = {
         }
       });
 
-      // type check
+      // user check
       if (!user) throw new Error("User with that address doesn't exists");
-      if (check.greaterOrEqual(amount, user.tokens[0].balance)) throw new Error("User doesn't have the required balance");
 
-      // create the Bet
-      const bet = new Bet({
-        amount: amount,
-        multiplier: multiplier,
-        hash: new mongoose.Types.ObjectId,
-        address: address
-      })
-      
-      // add the bet to the user
-      let bets = user.tokens[0].bets;
-      bets.push(bet._id);
-
-      // update balance and bets
-      const balance = user.tokens[0].balance - amount;
-      await User.updateOne({
-        tokens: {
-          $elemMatch: {
-            _id: address
-          }
-        }
-      }, {
-        $set: {
-          "tokens.$.balance": balance,
-          "tokens.$.bets": bets
-        }
+      // update bet
+      const bet = await Bet.findOne({
+        betID
       });
+      console.log(bet);
+      bet.status = true;
 
-      return bet;
+      // update balance
+      user.tokens[0].balance = user.tokens[0] + amount;
+
+      // save
+      await bet.save();
+      await user.save();
     }
   }
 };
