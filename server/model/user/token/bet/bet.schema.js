@@ -3,7 +3,7 @@ const { gql } = require("apollo-server");
 const bet = gql`
   type Bet {
     _id: String!
-    bet: Int!
+    amount: Int!
     time: String
     bonus: Int
     multiplier: Float!
@@ -14,18 +14,21 @@ const bet = gql`
 
   extend type Mutation {
     createBet(
-      username: String!
       address: String!
-      bet: Int!
+      amount: Int!
       hash: String!
       multiplier: Float!
-    ): Boolean
+    ): Bet
 
-    endBet(hash: String!, users: [String]!): Boolean
+    closeBet(
+      address: String!
+      multiplier: Float!
+    ): Bet
+
   }
 
   extend type Query {
-    getUserBets(username: String!, address: String!): [Bet]
+    getAllBetsOfUser(username: String!, address: String!): [Bet]
   }
 `;
 
