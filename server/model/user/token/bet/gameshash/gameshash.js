@@ -15,11 +15,6 @@ const GamesHashSchema = new Schema({
         type: Number,
         required: true,
         validate: crashValidator
-    },
-    games: {
-        type: [mongoose.Schema.Types.ObjectId],
-        default: [],
-        ref: 'Game'
     }
 });
 

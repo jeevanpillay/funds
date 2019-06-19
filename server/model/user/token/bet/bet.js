@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 const {
   amountValidator,
   multiplierValidator
-} = require("./game.validator");
+} = require("./bet.validator");
 
-const GameSchema = new Schema({
-  bet: {
+const BetSchema = new Schema({
+  amount: {
     type: Number,
     required: true,
     validate: amountValidator
@@ -43,4 +43,4 @@ const GameSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("Game", GameSchema);
+module.exports = mongoose.model("Bet", BetSchema);

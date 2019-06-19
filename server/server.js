@@ -18,7 +18,7 @@ const [
   Withdrawal, 
   Deposit, 
   Investment, 
-  Game, 
+  Bet, 
   GamesHash 
 ] = require("./model/models");
 
@@ -86,7 +86,7 @@ const server = new ApolloServer({
     Withdrawal,
     Deposit,
     Investment, 
-    Game, 
+    Bet, 
     GamesHash 
   })
 });

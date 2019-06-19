@@ -9,7 +9,7 @@ const token = gql`
     withdrawals: [Withdrawal]
     deposits: [Deposit]
     investment: Investment
-    games: [Game]
+    bets: [Bet]
   }
 `;
 

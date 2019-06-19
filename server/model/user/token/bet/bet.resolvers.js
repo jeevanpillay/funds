@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 exports.resolvers = {
   Query: {
-    getUserGames: async (root, {
+    getUserBets: async (root, {
       username,
       address
     }, {
       User,
-      Game
+      Bet
     }) => {
       // error check
       const user = await User.findOne({
@@ -22,22 +22,22 @@ exports.resolvers = {
         throw new Error("User with that address doesn't exists");
       }
 
-      // get all games
-      return await Game.find({
+      // get all Bets
+      return await Bet.find({
         address: address
       })
     }
   },
   Mutation: {
-    createGame: async (root, {
+    createBet: async (root, {
       username,
       address,
-      bet,
+      amount,
       hash,
       multiplier
     }, {
       User,
-      Game
+      Bet
     }) => {
       // get user
       const user = await User.findOne({
@@ -53,20 +53,20 @@ exports.resolvers = {
       if (!user) throw new Error("User with that address doesn't exists");
       if (user.tokens[0].balance < 0) throw new Error("User doesn't have the required balance");
 
-      // create the game
-      const game = await new Game({
-        bet: bet,
+      // create the Bet
+      const bet = await new Bet({
+        amount: amount,
         multiplier: multiplier,
         hash: new mongoose.Types.ObjectId,
         address: address
       }).save();
 
-      // add the game to the user
-      let games = user.tokens[0].games;
-      games.push(game._id);
+      // add the Bet to the user
+      let bets = user.tokens[0].Bets;
+      bets.push(bet._id);
 
       // update balance
-      const balance = user.tokens[0].balance - bet;
+      const balance = user.tokens[0].balance - amount;
       await User.updateOne({
         tokens: {
           $elemMatch: {
@@ -76,32 +76,32 @@ exports.resolvers = {
       }, {
         $set: {
           "tokens.$.balance": balance,
-          "tokens.$.games": games
+          "tokens.$.bets": bets
         }
       });
 
       return true;
     },
 
-    endGame: async (root, {
+    endBet: async (root, {
       hash,
       users,
       crashpoint
     }, {
       User,
-      Game,
-      GameHash
+      Bet,
+      GamesHash
     }) => {
       // error checker
-      // const gameHash = await GameHash({
+      // const GamesHash = await GamesHash({
       //   hash: hash
       // })
-      // if (!gameHash) {
-      //   throw new Error("Game hash doesn't exist");
+      // if (!GamesHash) {
+      //   throw new Error("Bet hash doesn't exist");
       // }
 
       // // update crashpoint
-      // await GameHash.updateOne({
+      // await GamesHash.updateOne({
       //   hash: hash
       // }, {
       //   crashpoint: crashpoint
@@ -114,21 +114,21 @@ exports.resolvers = {
           _id: users[i]
         });
 
-        // find the game
-        const game = await Game.findOne({
+        // find the Bet
+        const bet = await Bet.findOne({
           hash: hash,
           address: user.tokens[0].address
         });
         
         console.log(typeof Object(hash));
-        console.log(game);
+        console.log(bet);
 
         // updates
-        game.status = true;
-        user.tokens[0].balance = user.tokens[0].balance + game.bet * crashpoint;
+        bet.status = true;
+        user.tokens[0].balance = user.tokens[0].balance + Bet.amount * crashpoint;
 
         // save
-        await game.save();
+        await Bet.save();
         await user.save();
       }
     }

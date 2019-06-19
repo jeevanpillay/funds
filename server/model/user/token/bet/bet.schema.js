@@ -1,7 +1,7 @@
 const { gql } = require("apollo-server");
 
-const game = gql`
-  type Game {
+const bet = gql`
+  type Bet {
     _id: String!
     bet: Int!
     time: String
@@ -13,7 +13,7 @@ const game = gql`
   }
 
   extend type Mutation {
-    createGame(
+    createBet(
       username: String!
       address: String!
       bet: Int!
@@ -21,12 +21,12 @@ const game = gql`
       multiplier: Float!
     ): Boolean
 
-    endGame(hash: String!, users: [String]!): Boolean
+    endBet(hash: String!, users: [String]!): Boolean
   }
 
   extend type Query {
-    getUserGames(username: String!, address: String!): [Game]
+    getUserBets(username: String!, address: String!): [Bet]
   }
 `;
 
-module.exports = game;
+module.exports = bet;

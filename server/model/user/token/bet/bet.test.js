@@ -4,44 +4,44 @@ const assert = require("chai").assert;
 const mongoose = require("mongoose");
 
 // model
-const Game = require("./game");
+const Bet = require("./bet");
 
 // test
-describe("Game schema", function () {
-    describe("Bet", () => {
+describe("Bet schema", function () {
+    describe("amount", () => {
         it("is invalid if empty", function (done) {
-            var g = new Game();
+            var g = new Bet();
 
             g.validate(function (err) {
-                expect(err.errors.bet).to.exist;
+                expect(err.errors.amount).to.exist;
                 done();
             });
         });
 
         it("should be more than 0", function (done) {
             // test lower boundary
-            var g = new Game({
-                bet: -1
+            var g = new Bet({
+                amount: -1
             });
 
             g.validate(function (err) {
-                expect(err.errors.bet).to.exist;
+                expect(err.errors.amount).to.exist;
             });
 
             // test
-            var g = new Game({
-                bet: 0
+            var g = new Bet({
+                amount: 0
             });
             g.validate(function (err) {
-                expect(err.errors.bet).to.exist;
+                expect(err.errors.amount).to.exist;
             });
 
             // test upper boundary
-            var g = new Game({
-                bet: 1
+            var g = new Bet({
+                amount: 1
             });
             g.validate(function (err) {
-                expect(err.errors.bet).to.not.exist;
+                expect(err.errors.amount).to.not.exist;
             });
 
             done();
@@ -50,7 +50,7 @@ describe("Game schema", function () {
 
     describe("Time", () => {
         it("valid if empty", function (done) {
-            var g = new Game();
+            var g = new Bet();
 
             g.validate(function (err) {
                 expect(err.errors.time).to.not.exist;
@@ -59,7 +59,7 @@ describe("Game schema", function () {
         });
 
         it("must be equal to the current date", function (done) {
-            var g = new Game();
+            var g = new Bet();
 
             assert.equal(g.time.Date, Date.now().Date);
             done();
@@ -68,7 +68,7 @@ describe("Game schema", function () {
 
     describe("Bonus", function () {
         it("is valid if empty", function (done) {
-            var g = new Game();
+            var g = new Bet();
 
             g.validate(function (err) {
                 expect(err.errors.bonus).to.not.exist;
@@ -78,7 +78,7 @@ describe("Game schema", function () {
 
         it("should be more than 0", function (done) {
             // test lower boundary
-            var g = new Game({
+            var g = new Bet({
                 bonus: -1
             });
 
@@ -87,7 +87,7 @@ describe("Game schema", function () {
             });
 
             // test
-            var g = new Game({
+            var g = new Bet({
                 bonus: 0
             });
             g.validate(function (err) {
@@ -95,7 +95,7 @@ describe("Game schema", function () {
             });
 
             // test upper boundary
-            var g = new Game({
+            var g = new Bet({
                 bonus: 1
             });
             g.validate(function (err) {
@@ -106,7 +106,7 @@ describe("Game schema", function () {
         });
 
         it("should be able to have decimal values", function (done) {
-            var g = new Game({
+            var g = new Bet({
                 bonus: 1.1
             });
 
@@ -119,7 +119,7 @@ describe("Game schema", function () {
 
     describe("Multiplier", function () {
         it("is invalid if empty", function (done) {
-            var g = new Game();
+            var g = new Bet();
 
             g.validate(function (err) {
                 expect(err.errors.multiplier).to.exist;
@@ -129,7 +129,7 @@ describe("Game schema", function () {
 
         it("should be more than or equal to 0", function (done) {
             // test lower boundary
-            var g = new Game({
+            var g = new Bet({
                 multiplier: -1
             });
 
@@ -138,7 +138,7 @@ describe("Game schema", function () {
             });
 
             // test
-            var g = new Game({
+            var g = new Bet({
                 multiplier: 0
             });
             g.validate(function (err) {
@@ -146,7 +146,7 @@ describe("Game schema", function () {
             });
 
             // test upper boundary
-            var g = new Game({
+            var g = new Bet({
                 multiplier: 1
             });
             g.validate(function (err) {
@@ -157,7 +157,7 @@ describe("Game schema", function () {
         });
 
         it("should be able to have decimal values", function (done) {
-            var g = new Game({
+            var g = new Bet({
                 multiplier: 1.1
             });
 
@@ -168,7 +168,7 @@ describe("Game schema", function () {
         });
 
         it("should can have very large values", function (done) {
-            var g = new Game({
+            var g = new Bet({
                 multiplier: 1000
             });
 
@@ -176,7 +176,7 @@ describe("Game schema", function () {
                 expect(err.errors.multiplier).to.not.exist;
             });
 
-            var g = new Game({
+            var g = new Bet({
                 multiplier: 10000
             });
 
@@ -184,7 +184,7 @@ describe("Game schema", function () {
                 expect(err.errors.multiplier).to.not.exist;
             });
 
-            var g = new Game({
+            var g = new Bet({
                 multiplier: 111.11
             });
 
@@ -196,9 +196,9 @@ describe("Game schema", function () {
         });
     });
 
-    describe("GamesHash", function () {
+    describe("BetsHash", function () {
         it("is invalid if empty", function (done) {
-            let g = new Game();
+            let g = new Bet();
 
             g.validate(function (err) {
                 expect(err.errors.hash).to.exist;
@@ -207,7 +207,7 @@ describe("Game schema", function () {
         });
 
         it("is valid if type ObjectID is supplied", function (done) {
-            let g = new Game({
+            let g = new Bet({
                 hash: new mongoose.Types.ObjectId
             });
 
@@ -218,7 +218,7 @@ describe("Game schema", function () {
         });
 
         it("is invalid if type ObjectID is not supplied", function (done) {
-            let g = new Game({
+            let g = new Bet({
                 hash: 1
             });
 

@@ -68,48 +68,4 @@ describe("GamesHash schema", function () {
             done();
         })
     });
-
-    describe("Games", function () {
-        it("is invalid if empty", function (done) {
-            let gh = new GamesHash();
-
-            gh.validate(function (err) {
-                expect(err.errors.games).to.not.exist;
-                done();
-            });
-        });
-
-        it("is an empty array", function (done) {
-            let gh = new GamesHash();
-
-            assert(gh.games, []);
-            done();
-        });
-
-        it("can add an ObjectID", function (done) {
-            let gh = new GamesHash();
-            let objectid = new mongoose.Types.ObjectId;
-            gh.games.push(objectid);
-            assert(gh.games, [objectid]);
-            done();
-        });
-
-        it("can add multiple ObjectID's", function (done) {
-            let gh = new GamesHash();
-            let objectid = new mongoose.Types.ObjectId;
-            let objectid2 = new mongoose.Types.ObjectId;
-            gh.games.push(objectid);
-            gh.games.push(objectid2);
-            assert(gh.games, [objectid,objectid2]);
-            done();
-        });
-
-        it("array items of type ObjectID's", function (done) {
-            let gh = new GamesHash();
-            let objectid = new mongoose.Types.ObjectId;
-            gh.games.push(objectid);
-            assert(typeof gh.games[0], typeof objectid);
-            done();
-        });
-    });
 });
