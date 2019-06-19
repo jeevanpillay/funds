@@ -56,30 +56,25 @@ exports.resolvers = {
       if (check.greater(0, amount)) throw new Error("Bet amount should be more than 0")
 
       // get user
-      const user = await User.findOne({
-        tokens: {
-          $elemMatch: {
-            _id: address
-          }
-        }
-      });
+      let user = await User.findOne(
+        { tokens: { $elemMatch: { _id: address, name: "VET" } } },
+        { "tokens.balance": 1 }
+      );
+      if (check.null(user)) throw new Error("User's tokens with that address doesn't exists");
 
-      // user check
-      if (!user) throw new Error("User with that address doesn't exists");
+      // get the betID
+      let bet = await Bet.findOne({ _id: betID });
+      bet.status = false;
+      bet.save();
 
-      // update bet
-      const bet = await Bet.findOne({
-        betID
-      });
-      console.log(bet);
-      bet.status = true;
+      // save balance amount
+      let balance = user.tokens[0].balance;
+      await User.updateOne(
+        { tokens: { $elemMatch: { _id: address, name: "VET" } } },
+        { $set: { "tokens.$.balance": balance + amount } }
+      );
 
-      // update balance
-      user.tokens[0].balance = user.tokens[0] + amount;
-
-      // save
-      await bet.save();
-      await user.save();
+      return bet;
     }
   }
 };

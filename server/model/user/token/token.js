@@ -46,11 +46,6 @@ const TokenSchema = new Schema({
     default: [],
     ref: 'Deposit' 
   },
-  bets: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: [],
-    ref: 'Bet' 
-  },
   investment: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Investment"

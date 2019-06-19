@@ -1,11 +1,12 @@
-const { gql } = require("apollo-server");
+const {
+  gql
+} = require("apollo-server");
 
-const bet = gql`
+const bet = gql `
   type Bet {
     _id: String!
     amount: Int!
     time: String
-    bonus: Int
     multiplier: Float!
     status: Boolean
     address: String!

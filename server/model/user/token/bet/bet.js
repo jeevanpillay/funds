@@ -15,11 +15,6 @@ const BetSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
-  bonus: {
-    type: Number,
-    default: 0,
-    validate: multiplierValidator
-  },
   multiplier: {
     type: Number,
     required: true,
