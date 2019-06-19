@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const check = require('check-types');
-const assert = require('assert');
 
 exports.resolvers = {
   Query: {
@@ -74,6 +73,22 @@ exports.resolvers = {
         { $set: { "tokens.$.balance": balance + amount } }
       );
 
+      return bet;
+    },
+
+    forceCloseBet: async (root, { address, betID } , { User, Bet }) => {
+      // get user
+      let user = await User.findOne(
+        { tokens: { $elemMatch: { _id: address, name: "VET" } } },
+      );
+      if (check.null(user)) throw new Error("User's tokens with that address doesn't exists");
+
+      // get the betID
+      let bet = await Bet.findOne({ _id: betID });
+      bet.status = false;
+      bet.save();
+
+      // return
       return bet;
     }
   }

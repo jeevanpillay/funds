@@ -27,6 +27,10 @@ const bet = gql `
       betID: String!
     ): Bet
 
+    forceCloseBet(
+      address: String!
+      betId: String!
+    ): Bet
   }
 
   extend type Query {
