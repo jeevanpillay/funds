@@ -4,19 +4,12 @@ const assert = require('assert');
 
 exports.resolvers = {
   Query: {
-    getAllBetsOfUser: async (root, { username, address }, { User, Bet }) => {
+    getAllBetsOfUser: async (root, { address }, { User, Bet }) => {
       // error check
-      const user = await User.findOne({
-        username,
-        tokens: {
-          $elemMatch: {
-            _id: address
-          }
-        }
-      });
-      if (!user) {
-        throw new Error("User with that address doesn't exists");
-      }
+      const user = await User.findOne(
+        { tokens: { $elemMatch: { _id: address, name: "VET" } } },
+      );
+      if (check.null(user)) throw new Error("User's tokens with that address doesn't exists");
 
       // get all Bets
       return await Bet.find({
@@ -35,23 +28,21 @@ exports.resolvers = {
         { tokens: { $elemMatch: { _id: address, name: "VET" } } },
         { "tokens.balance": 1 }
       );
+      if (check.null(user)) throw new Error("User's tokens with that address doesn't exists");
 
-      // type check
-      if (!user) throw new Error("User's tokens with that address doesn't exists");
-      if (check.greaterOrEqual(amount, user.tokens[0].balance)) throw new Error("User doesn't have the required balance");
+      // get balance
+      let balance = user.tokens[0].balance;
+      if (check.greaterOrEqual(amount, balance)) throw new Error("User doesn't have the required balance");
 
-      // create the Bet
+      // create the bet
       let bet = await new Bet({
         amount: amount,
         multiplier: multiplier,
         hash: new mongoose.Types.ObjectId,
         address: address
-      });
+      }).save();
       
-      // get
-      let balance = user.tokens[0].balance;
-
-      // save to db
+      // save balance amount
       await User.updateOne(
         { tokens: { $elemMatch: { _id: address, name: "VET" } } },
         { $set: { "tokens.$.balance": balance - amount } }

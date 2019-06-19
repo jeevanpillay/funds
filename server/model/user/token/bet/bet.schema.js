@@ -29,7 +29,7 @@ const bet = gql`
   }
 
   extend type Query {
-    getAllBetsOfUser(username: String!, address: String!): [Bet]
+    getAllBetsOfUser(address: String!): [Bet]
   }
 `;
 
