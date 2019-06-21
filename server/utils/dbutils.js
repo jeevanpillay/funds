@@ -2,8 +2,8 @@
 const check = require("check-types");
 
 // Mongoose models
-const User = require("../user/user");
-const Deposit = require("../user/token/deposit/deposit");
+const User = require("../model/user/user");
+const Deposit = require("../model/user/token/deposit/deposit");
 
 deposit = async (fromAddress, toAddress, amount, token) => {
     await getUserByAddress(toAddress, token);

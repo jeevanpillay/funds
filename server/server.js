@@ -7,8 +7,8 @@ const chalk = require("chalk");
 // Blockchain imports
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
-const createBlockWatchService = require("./model/blockchain/subscriptions/block");
-const createTransferWatchService = require("./model/blockchain/subscriptions/transfer");
+const createBlockWatchService = require("./blockchain/subscriptions/block");
+const createTransferWatchService = require("./blockchain/subscriptions/transfer");
 
 // Import Mongoose and GraphQL essentials
 const mongoose = require("mongoose");
