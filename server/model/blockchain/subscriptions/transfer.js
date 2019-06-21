@@ -1,4 +1,4 @@
-const { deposit, getAllUsersAddress } = require("../dbutils");
+const { deposit, getAllUsersAddress } = require("../../utils/dbutils");
 
 createTransferWatchService = async function (web3, token) {
     // get all users with their addresses
