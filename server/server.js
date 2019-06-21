@@ -7,7 +7,8 @@ const chalk = require("chalk");
 // Blockchain imports
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
-const { createTransferWatchService, createBlockWatchService } = require("./model/blockchain/vechain");
+const createBlockWatchService = require("./model/blockchain/subscriptions/block");
+const createTransferWatchService = require("./model/blockchain/subscriptions/transfer");
 
 // Import Mongoose and GraphQL essentials
 const mongoose = require("mongoose");
@@ -46,7 +47,10 @@ mongoose
     const TOKEN = "VET";
   
     // creating a deposit service
-    createBlockWatchService(web3, TOKEN);
+    if (NODE_ENV === "production")
+      createBlockWatchService(web3, TOKEN);
+    else
+      createTransferWatchService(web3, TOKEN);
 
     // connected to DB
     console.log(success(`Connected to ${connection("MongoDB")}!`));
