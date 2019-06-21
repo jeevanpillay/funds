@@ -1,15 +1,17 @@
-// Imports
+// NodeJS dependencies Imports
 const express = require("express");
-const mongoose = require("mongoose");
-const { ApolloServer } = require("apollo-server-express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const chalk = require("chalk");
+
+// Blockchain imports
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
-const VechainBlockchain = require("./model/blockchain/vechain");
+const createWatchService = require("./model/blockchain/vechain");
 
 // Import Mongoose and GraphQL essentials
+const mongoose = require("mongoose");
+const { ApolloServer } = require("apollo-server-express");
 const typeDefs = require("./model/schemas");
 const resolvers = require("./model/resolvers");
 const [ 
@@ -39,10 +41,13 @@ const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true })
   .then(() => {
+    // creating a deposit service
+    const TOKEN = "VET";
+    createWatchService(web3, TOKEN);
+
+    // connected to DB
     console.log(success(`Connected to ${connection("MongoDB")}!`));
 
-    // creating a fake service
-    VechainBlockchain.createWatchServiceFake(web3);
   })
   .catch(err => console.log(error(err)));
 

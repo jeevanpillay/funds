@@ -21,7 +21,12 @@ const DepositSchema = new Schema({
     default: 0,
     validate: confirmationsValidator
   },
-  address: {
+  fromAddress: {
+    type: String,
+    required: true,
+    validate: addressValidator,
+  },
+  toAddress: {
     type: String,
     required: true,
     validate: addressValidator,

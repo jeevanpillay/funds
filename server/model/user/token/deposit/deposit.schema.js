@@ -6,7 +6,8 @@ const deposit = gql`
     amount: Int!
     time: String
     confirmations: Int
-    address: String!
+    fromAddress: String!
+    toAddress: String!
   }
 
   extend type Query {
