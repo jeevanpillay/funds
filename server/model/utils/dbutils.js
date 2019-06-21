@@ -7,7 +7,7 @@ const Deposit = require("../user/token/deposit/deposit");
 
 deposit = async (fromAddress, toAddress, amount, token) => {
     await getUserByAddress(toAddress, token);
-    await createDeposit(fromAddress, toAddress, amount);
+    return await createDeposit(fromAddress, toAddress, amount);
 }
 
 getUserByAddress = async (address, token, returns) => {
@@ -55,6 +55,23 @@ createDeposit = async (fromAddress, toAddress, amount) => {
         toAddress: toAddress,
         amount: amount,
     }).save();
+
+    // return
+    return deposit;
+}
+
+updateDeposit = async (depositID) => {
+    // find deposit and update
+    let deposit = await Deposit.findOneAndUpdate(
+        { _id: depositID },
+        { "toAddress": 1,
+          $set: {
+            "confirmation": true,
+          }
+        }
+    );
+
+    console.log(deposit);
 
     // return
     return deposit;

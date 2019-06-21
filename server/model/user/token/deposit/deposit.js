@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const {
   amountValidator,
-  confirmationsValidator,
   addressValidator
 } = require("./deposit.validator");
 
@@ -16,10 +15,9 @@ const DepositSchema = new Schema({
     type: Date,
     default: Date.now()
   },
-  confirmations: {
-    type: Number,
-    default: 0,
-    validate: confirmationsValidator
+  confirmation: {
+    type: Boolean,
+    default: false,
   },
   fromAddress: {
     type: String,

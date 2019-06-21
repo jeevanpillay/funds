@@ -5,7 +5,7 @@ const deposit = gql`
     _id: ID
     amount: Int!
     time: String
-    confirmations: Int
+    confirmation: Int
     fromAddress: String!
     toAddress: String!
   }
