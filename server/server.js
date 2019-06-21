@@ -7,7 +7,7 @@ const chalk = require("chalk");
 // Blockchain imports
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
-const createWatchService = require("./model/blockchain/vechain");
+const { createTransferWatchService, createBlockWatchService } = require("./model/blockchain/vechain");
 
 // Import Mongoose and GraphQL essentials
 const mongoose = require("mongoose");
@@ -41,9 +41,12 @@ const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true })
   .then(() => {
-    // creating a deposit service
+    // Configure Vechain Thor Setup
+    const web3 = Thorify(new Web3(), THOR_NETWORK);
     const TOKEN = "VET";
-    createWatchService(web3, TOKEN);
+  
+    // creating a deposit service
+    createTransferWatchService(web3, TOKEN);
 
     // connected to DB
     console.log(success(`Connected to ${connection("MongoDB")}!`));
@@ -53,8 +56,7 @@ mongoose
 
 mongoose.set("useCreateIndex", true);
 
-// Configure Vechain Thor Setup
-const web3 = Thorify(new Web3(), THOR_NETWORK);
+
 
 // initialise application
 const app = express();

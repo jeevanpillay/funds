@@ -6,11 +6,11 @@ const User = require("../user/user");
 const Deposit = require("../user/token/deposit/deposit");
 
 deposit = async (fromAddress, toAddress, amount, token) => {
-    await getUser(toAddress, token);
+    await getUserByAddress(toAddress, token);
     await createDeposit(fromAddress, toAddress, amount);
 }
 
-getUser = async (address, token, returns) => {
+getUserByAddress = async (address, token, returns) => {
     // TODO: assertions for address, token, returns
     // get user
     let user = await User.findOne(
@@ -25,7 +25,7 @@ getUser = async (address, token, returns) => {
     return user;
 }
 
-getAddresses = async (token) => {
+getAllUsersAddress = async (token) => {
     // find all users based on token provided
     let users = await User.find(
         { tokens: { $elemMatch: { name: token } } },
@@ -60,4 +60,4 @@ createDeposit = async (fromAddress, toAddress, amount) => {
     return deposit;
 }
 
-module.exports = { deposit, getAddresses };
+module.exports = { deposit, getAllUsersAddress };
