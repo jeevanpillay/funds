@@ -46,7 +46,7 @@ mongoose
     const TOKEN = "VET";
   
     // creating a deposit service
-    createTransferWatchService(web3, TOKEN);
+    createBlockWatchService(web3, TOKEN);
 
     // connected to DB
     console.log(success(`Connected to ${connection("MongoDB")}!`));
@@ -55,8 +55,6 @@ mongoose
   .catch(err => console.log(error(err)));
 
 mongoose.set("useCreateIndex", true);
-
-
 
 // initialise application
 const app = express();
