@@ -34,7 +34,26 @@ cd server
 yarn test
 ```
 
-
+## Essential knowledge to understand how some service works
+* Provably Fair
+  * The application is built around this concept of provably fair games, whereby, users are able to prove that the integrity of the game has not been compromised
+  * This is achieved through the management of serverSeed and hostServer, whereby the serverSeed is created at project inception
+    * We can arbritarily generate a list of N serverSeeds through a seeding event
+    * N must be large as 1e7 when in production
+* Management of user accounts
+  * Hierarchical Deterministic keys
+* Deposit and Withdrawal
+    * For development enviroment, we create a service that subscribe's to the transfer of each account
+      * O(N), where N is the number of acccounts in the system
+      * This is really slow onces N > M
+    * For production enviroment, we subscribe to the block service and check clauses if the user's account has a deposit/withdrawal
+      * O(M), where M is the number of transaction in the system
+      * Also, the number of confirmations is an arbritray number that can be set to 1 if you want fast confirmation times
+* Vechain Thor
+  * Initial blockchain that we are running the application on
+  * It's important to understand the difference between Ethereum and Vechain's transaction
+    * Specifically how clauses work in Vechain
+    
 ## Built With
 Essentially we are using MERN stack as the basis of the application. 
 
