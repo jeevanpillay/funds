@@ -29,6 +29,7 @@ const [
 const error = chalk.bold.red;
 const success = chalk.bold.green;
 const connection = chalk.bold.magenta;
+const environment = chalk.bold.blue;
 
 // Configure PORT
 require("dotenv").config({
@@ -43,20 +44,22 @@ const CONFIRMATION_COUNT = process.env.CONFIRMATION_COUNT || 12;
 // connect to database
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true })
-  .then(() => {
+  .then(() => {    
+    // connected to DB
+    console.log(success(`Connected to ${environment("MongoDB")}!`));
+    
     // Configure Vechain Thor Setup
     const web3 = Thorify(new Web3(), THOR_NETWORK);
   
     // creating a deposit service
     if (NODE_ENV === "production") {
       createBlockWatchService(web3, TOKEN, CONFIRMATION_COUNT);
+      console.log(connection("Succesfully created block subscription service!"))
     }
-    else
+    else {
       createTransferWatchService(web3, TOKEN);
-
-    // connected to DB
-    console.log(success(`Connected to ${connection("MongoDB")}!`));
-
+      console.log(connection("Succesfully created transfer service!"))
+    }
   })
   .catch(err => console.log(error(err)));
 
@@ -107,9 +110,7 @@ server.applyMiddleware({ app })
 app.listen(PORT, () => {
   console.log(
     success(
-      `Server listening on ${chalk.blue("PORT " + PORT)}: ${connection(
-        NODE_ENV
-      )}`
+      `Server listening on ${environment("PORT " + PORT + ": " + NODE_ENV)}`
     )
   );
 });
