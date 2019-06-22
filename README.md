@@ -29,6 +29,8 @@ yarn
 
 ## Running the tests
 
+Essentially we are running Mocha and Chai for the backend test's.
+
 ```
 cd server
 yarn test
@@ -49,6 +51,7 @@ yarn test
     * For production enviroment, we subscribe to the block service and check clauses if the user's account has a deposit/withdrawal
       * O(M), where M is the number of transaction in the system
       * Also, the number of confirmations is an arbritray number that can be set to 1 if you want fast confirmation times
+      * Note, current max TPS reached on Vechain = ~110 TPS 
 * Vechain Thor
   * Initial blockchain that we are running the application on
   * It's important to understand the difference between Ethereum and Vechain's transaction
