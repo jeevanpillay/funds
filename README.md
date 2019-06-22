@@ -46,5 +46,5 @@ Essentially we are using MERN stack as the basis of the application.
 * [ApolloClient)(https://www.apollographql.com/docs/react/) - The API enabler that allows us to use GraphQL in React.
 * [NextJS](https://nextjs.org/docs) - Enabler for certain front end things like server side render, hot module replacement.
 
-* Inspirations
+## Inspirations
 * [Bustabit](www.bustabit.com) - The initial application is based on this
