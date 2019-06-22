@@ -1,7 +1,5 @@
 # veBomb
 
-# veBomb
-
 This application form the base files of the veBomb application. It will initially be used for a game similar to Bustabit, but will be extended to other similar games as well.
 
 ## Getting Started
