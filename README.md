@@ -43,7 +43,7 @@ Essentially we are using MERN stack as the basis of the application.
 * [React](https://reactjs.org/) - The front end framework to build the UI
 * [NodeJS](https://nodejs.org/en/) - The Javascript runtime library
 * [GraphQL](https://graphql.org/) - The API framework used
-* [ApolloClient)(https://www.apollographql.com/docs/react/) - The API enabler that allows us to use GraphQL in React.
+* [ApolloClient](https://www.apollographql.com/docs/react/) - The API enabler that allows us to use GraphQL in React.
 * [NextJS](https://nextjs.org/docs) - Enabler for certain front end things like server side render, hot module replacement.
 
 ## Inspirations
