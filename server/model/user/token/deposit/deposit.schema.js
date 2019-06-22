@@ -8,6 +8,8 @@ const deposit = gql`
     confirmation: Int
     fromAddress: String!
     toAddress: String!
+    blockNumber: Int!
+    txid: String!
   }
 
   extend type Query {

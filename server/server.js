@@ -37,6 +37,8 @@ require("dotenv").config({
 const PORT = process.env.PORT || 4444;
 const NODE_ENV = process.env.NODE_ENV || "development";
 const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
+const TOKEN = process.env.TOKEN || "VET";
+const CONFIRMATION_COUNT = process.env.CONFIRMATION_COUNT || 12;
 
 // connect to database
 mongoose
@@ -44,11 +46,11 @@ mongoose
   .then(() => {
     // Configure Vechain Thor Setup
     const web3 = Thorify(new Web3(), THOR_NETWORK);
-    const TOKEN = "VET";
   
     // creating a deposit service
-    if (NODE_ENV === "production")
-      createBlockWatchService(web3, TOKEN);
+    if (NODE_ENV === "production") {
+      createBlockWatchService(web3, TOKEN, CONFIRMATION_COUNT);
+    }
     else
       createTransferWatchService(web3, TOKEN);
 

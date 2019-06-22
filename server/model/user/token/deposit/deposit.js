@@ -28,6 +28,14 @@ const DepositSchema = new Schema({
     type: String,
     required: true,
     validate: addressValidator,
+  },
+  blockNumber: {
+    type: Number,
+    required: true
+  },
+  txid: {
+    type: String,
+    required: true
   }
 });
 
