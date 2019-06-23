@@ -1,0 +1,4 @@
+interface TransactionWatchService {
+    createBlockWatchService();
+    createTransferWatchService();
+}
