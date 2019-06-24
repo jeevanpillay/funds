@@ -1,5 +1,5 @@
 // imports
-const check = require("check-types");
+const check = require("check-types/src/check-types");
 
 // Mongoose models
 const User = require("../model/user/user");
@@ -109,7 +109,11 @@ updateExistingDeposits = async (blockNumber, token) => {
 
     for (var deposit of deposits) {
         try {
-            await updateUsersDeposit(deposit.toAddress, deposit.amount, token);
+            deposit.confirmation = true;
+            await deposit.save()
+            .then(async () => {
+                await updateUsersDeposit(deposit.toAddress, deposit.amount, token)
+            })
         } catch (err) {
             console.log(err);
         }

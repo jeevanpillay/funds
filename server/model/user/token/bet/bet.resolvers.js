@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const check = require('check-types');
+const check = require('check-types/src/check-types');
 
 exports.resolvers = {
   Query: {

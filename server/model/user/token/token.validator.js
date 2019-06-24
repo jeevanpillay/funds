@@ -1,4 +1,4 @@
-const validate = require("mongoose-validator");
+const validate = require("mongoose-validator/lib/mongoose-validator");
 
 const nameValidator = [
   validate({

@@ -9,6 +9,7 @@ const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
 const createBlockWatchService = require("./blockchain/subscriptions/block");
 const createTransferWatchService = require("./blockchain/subscriptions/transfer");
+const VechainService = require("./blockchain/vechain/vechain.service");
 
 // Import Mongoose and GraphQL essentials
 const mongoose = require("mongoose");
@@ -50,16 +51,8 @@ mongoose
     
     // Configure Vechain Thor Setup
     const web3 = Thorify(new Web3(), THOR_NETWORK);
-  
-    // creating a deposit service
-    if (NODE_ENV === "production") {
-      createBlockWatchService(web3, TOKEN, CONFIRMATION_COUNT);
-      console.log(connection("Succesfully created block subscription service!"))
-    }
-    else {
-      createTransferWatchService(web3, TOKEN);
-      console.log(connection("Succesfully created transfer service!"))
-    }
+    const vechainService = new VechainService(web3, CONFIRMATION_COUNT);
+    console.log(connection("Succesfully created block watch service!"))
   })
   .catch(err => console.log(error(err)));
 
@@ -88,7 +81,7 @@ app.use(async (req, res, next) => {
   }
   next();
 });
-  
+
 // Initialise ApolloServer with the associated typeDefs and resolvers.
 const server = new ApolloServer({
   typeDefs,
