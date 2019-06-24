@@ -105,8 +105,6 @@ updateExistingDeposits = async (blockNumber, token) => {
         blockNumber: blockNumber
     });
 
-    console.log("block %s's deposits", blockNumber, deposits);
-
     for (var deposit of deposits) {
         try {
             deposit.confirmation = true;
