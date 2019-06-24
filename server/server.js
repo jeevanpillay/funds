@@ -1,3 +1,5 @@
+'use strict';
+
 // NodeJS dependencies Imports
 const express = require("express");
 const cors = require("cors");
@@ -37,8 +39,10 @@ require("dotenv").config({
 const PORT = process.env.PORT || 4444;
 const NODE_ENV = process.env.NODE_ENV || "development";
 const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
-const TOKEN = process.env.TOKEN || "VET";
-const CONFIRMATION_COUNT = process.env.CONFIRMATION_COUNT || 12;
+
+// Confirgurations for vechain
+const web3 = Thorify(new Web3(), THOR_NETWORK);
+const confirmation = 12;
 
 // connect to database
 mongoose
@@ -48,8 +52,7 @@ mongoose
     console.log(success(`Connected to ${environment("MongoDB")}!`));
     
     // Configure Vechain Thor Setup
-    const web3 = Thorify(new Web3(), THOR_NETWORK);
-    const vechainService = new VechainService(web3, CONFIRMATION_COUNT);
+    const vechainService = new VechainService(web3, confirmation);
     console.log(connection("Succesfully created block watch service!"))
   })
   .catch(err => console.log(error(err)));

@@ -40,8 +40,6 @@ module.exports = class VechainService extends BlockchainService {
             for (var tx of transactions)
                 this.createTransaction(tx, number, name);
         });
-
-        console.log("Connection to vechain service has been established, watching blocks");
     }
 
     createTransaction(tx, blockNumber, name) {
