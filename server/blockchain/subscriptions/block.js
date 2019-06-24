@@ -3,7 +3,12 @@ const { createIncomingDeposit, getAllUsersAddress, updateExistingDeposits } = re
 createBlockWatchService = async function (web3, token, confirmation) {
     // get all users with their addresses
     let addresses = await getAllUsersAddress(token);
-    
+
+    // create block subscription
+    createBlockSubscription(web3, addresses, token, confirmation);
+};
+
+createBlockSubscription = function (web3, addr, token, confirmation) { 
     // Create block header subscription
     const subscription = web3.eth.subscribe("newBlockHeaders");
 
@@ -17,11 +22,11 @@ createBlockWatchService = async function (web3, token, confirmation) {
 
         // iterate tx to create new deposits
         for (var tx of transactions)
-            createTransaction(web3, tx, addresses, token, number);
+            createDepositTransaction(web3, tx, addresses, token, number);
     });
-};
+}
 
-createTransaction = function (web3, tx, addresses, token, blockNumber) {
+createDepositTransaction = function (web3, tx, addresses, token, blockNumber) {
     web3.eth.getTransaction(tx)
         .then(({
             clauses,

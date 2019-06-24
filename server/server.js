@@ -83,12 +83,12 @@ app.use(async (req, res, next) => {
       const currentUser = await jwt.verify(token, process.env.SECRET);
       req.currentUser = currentUser;
     } catch (err) {
-      console.log(error(err));
+      throw new Error("Issue with validating user token", err);
     }
   }
   next();
 });
-
+  
 // Initialise ApolloServer with the associated typeDefs and resolvers.
 const server = new ApolloServer({
   typeDefs,
