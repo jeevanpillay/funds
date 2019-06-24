@@ -9,6 +9,7 @@ module.exports = class VechainService extends BlockchainService {
             "PLA": []
         }
 
+        // create service to watch for VET transactions
         this.createBlockWatchService("VET");
     }
 
