@@ -4,7 +4,16 @@ module.exports = class BlockchainService {
             throw new TypeError("Cannot construct Abstract instances directly");
         }
         this._web3Instance = web3;
-        this._confirmations = confirmations
+        this._confirmations = confirmations;
+        this._wallets = {};
+    }
+
+    get token() {
+        return this._token;
+    }
+
+    get wallets() {
+        return this._wallets;
     }
 
     get web3() {
@@ -15,5 +24,11 @@ module.exports = class BlockchainService {
         return this._confirmations;
     }
 
-    createBlockWatchService() {};
+    addWallet(wallet) {
+        this.wallets[wallet.address] = wallet.privateKey;
+    }
+
+    setupBlockWatchService() {};
+    createTransactions() {};
+    setupWallets() {};
 }

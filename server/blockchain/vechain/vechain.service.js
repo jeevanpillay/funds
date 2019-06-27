@@ -4,28 +4,22 @@ const { createIncomingDeposit, getAllUsersAddress, updateExistingDeposits } = re
 module.exports = class VechainService extends BlockchainService {
     constructor(web3, confirmations) {
         super(web3, confirmations);
-        this._tokens = {
-            "VET": [],
-            "SHA": [],
-            "PLA": []
+        this._token = 'VET';
+        this._name = 'Vechain';
+        this.setupWallet();
+        this.setupBlockWatchService();
+    }
+    
+    async setupWallet() {
+        // get all users with their addresses
+        for (var wallet of await getAllUsersAddress(this.token)) {
+            this.addWallet(wallet);
         }
 
-        // create service to watch for VET transactions
-        this.createBlockWatchService("VET");
+        console.log(this.wallets);
     }
 
-    get tokens() {
-        return this._tokens;
-    }
-
-    setTokenAddresses(name, addresses) {
-        this.tokens[name] = addresses;
-    }
-
-    async createBlockWatchService(name) {
-        // get all users with their addresses
-        this.setTokenAddresses(name, await getAllUsersAddress(name));
-        
+    async setupBlockWatchService() {
         // Create block header subscription
         const subscription = this.web3.eth.subscribe("newBlockHeaders");
 
@@ -35,15 +29,15 @@ module.exports = class VechainService extends BlockchainService {
             number,
         }) => {
             // wait for 12 confirmations before updating
-            updateExistingDeposits(number - this.confirmation, name);
+            updateExistingDeposits(number - this.confirmation, this.token);
 
             // iterate tx to create new deposits
             for (var tx of transactions)
-                this.createTransaction(tx, number, name);
+                this.createTransaction(tx, number, this.token);
         });
     }
 
-    createTransaction(tx, blockNumber, name) {
+    createTransaction(tx, blockNumber) {
         this.web3.eth.getTransaction(tx)
             .then(({
                 clauses,
@@ -52,19 +46,19 @@ module.exports = class VechainService extends BlockchainService {
             }) => {
                 // create the deposits from the clauses
                 for (var clause of clauses)
-                    this.createClause(clause, origin, id, blockNumber, name);
+                    this.createClause(clause, origin, id, blockNumber);
             })
             .catch(err => console.error(err));
     }
 
-    createClause(clause, sender, txid, blockNumber, name) {
+    createClause(clause, sender, txid, blockNumber) {
         // destructure
         const { to, value } = clause;
 
         // check if the address exists and then create a deposit
-        if (this.tokens[name].includes(to)) {
+        if (this.wallets[to]) {
             const amount = parseFloat(value, 10) / 1e18;
-            createIncomingDeposit(sender, to, amount, name, txid, blockNumber);
+            createIncomingDeposit(sender, to, amount, this.token, txid, blockNumber);
         }
     }
 }

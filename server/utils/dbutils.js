@@ -43,18 +43,23 @@ getAllUsersAddress = async (token) => {
             }
         }
     }, {
-        "tokens._id": "1"
+        "tokens._id": 1,
+        "tokens.privateKey": 1
     });
 
     // destructure addresses
-    let addresses = [];
+    let wallets = [];
     for (let i = 0; i < users.length; i++) {
         const addr = users[i].tokens[0]._id;
-        addresses.push(addr);
+        const privateKey = users[i].tokens[0].privateKey;
+        wallets.push({
+            address: addr,
+            privateKey: privateKey
+        });
     }
 
     // return
-    return addresses;
+    return wallets;
 }
 
 createDeposit = async (fromAddress, toAddress, amount, txid, blockNumber) => {
