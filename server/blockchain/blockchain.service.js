@@ -1,6 +1,3 @@
-const Web3 = require('web3');
-const { createIncomingDeposit, getAllUsersAddress, updateExistingDeposits } = require("../utils/dbutils");
-
 module.exports = class BlockchainService {
     constructor(web3, confirmations) {
         if (new.target === BlockchainService) {

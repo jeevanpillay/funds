@@ -1,4 +1,5 @@
 const BlockchainService = require("../blockchain.service");
+const { createIncomingDeposit, getAllUsersAddress, updateExistingDeposits } = require("../../utils/dbutils");
 
 module.exports = class VechainService extends BlockchainService {
     constructor(web3, confirmations) {
