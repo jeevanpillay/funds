@@ -13,7 +13,6 @@ const GraphQLConnection = require('./api');
 // Configure Chalk
 const error = chalk.bold.red;
 const success = chalk.bold.green;
-const connection = chalk.bold.magenta;
 const environment = chalk.bold.blue;
 
 // Configure PORT
@@ -22,7 +21,6 @@ require("dotenv").config({
 });
 const PORT = process.env.PORT || 4444;
 const NODE_ENV = process.env.NODE_ENV || "development";
-const THOR_NETWORK = process.env.THOR_NETWORK || "http://localhost:8669";
 
 // initialise application
 const app = express();
@@ -44,13 +42,14 @@ app.use(async (req, res, next) => {
       const currentUser = await jwt.verify(token, process.env.SECRET);
       req.currentUser = currentUser;
     } catch (err) {
-      throw new Error("Issue with validating user token", err);
+      console.log(error(err));
     }
   }
   next();
 });
 
-// Setup GraphQL middleware
+// Setup GraphQL middleware, /graphql endpoint only setup
+// during development environment
 gql.server.applyMiddleware({ app })
 
 // Listen to the Port

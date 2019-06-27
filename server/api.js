@@ -17,9 +17,9 @@ module.exports = class GraphQLConnection {
     constructor() {
         // Initialise ApolloServer with the associated typeDefs and resolvers.
         this._server = new ApolloServer({
-                typeDefs,
-                resolvers,
-                context: ({ req }) => ({
+            typeDefs,
+            resolvers,
+            context: ({ req }) => ({
                 currentUser: req.currentUser,
                 User,
                 Token,
