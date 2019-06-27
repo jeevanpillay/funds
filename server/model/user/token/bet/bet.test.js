@@ -65,58 +65,7 @@ describe("Bet schema", function () {
             done();
         });
     });
-
-    describe("Bonus", function () {
-        it("is valid if empty", function (done) {
-            var g = new Bet();
-
-            g.validate(function (err) {
-                expect(err.errors.bonus).to.not.exist;
-                done();
-            });
-        });
-
-        it("should be more than 0", function (done) {
-            // test lower boundary
-            var g = new Bet({
-                bonus: -1
-            });
-
-            g.validate(function (err) {
-                expect(err.errors.bonus).to.exist;
-            });
-
-            // test
-            var g = new Bet({
-                bonus: 0
-            });
-            g.validate(function (err) {
-                expect(err.errors.bonus).to.not.exist;
-            });
-
-            // test upper boundary
-            var g = new Bet({
-                bonus: 1
-            });
-            g.validate(function (err) {
-                expect(err.errors.bonus).to.not.exist;
-            });
-
-            done();
-        });
-
-        it("should be able to have decimal values", function (done) {
-            var g = new Bet({
-                bonus: 1.1
-            });
-
-            g.validate(function (err) {
-                expect(err.errors.bonus).to.not.exist;
-                done();
-            });
-        });
-    });
-
+    
     describe("Multiplier", function () {
         it("is invalid if empty", function (done) {
             var g = new Bet();

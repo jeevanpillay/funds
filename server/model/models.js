@@ -8,7 +8,7 @@ const Withdrawal = require("./user/token/withdrawal/withdrawal");
 const Deposit = require("./user/token/deposit/deposit");
 const Investment = require("./user/token/investment/investment");
 const Bet = require("./user/token/bet/bet");
-const GamesHash = require("./games/gameshash/gameshash");
+const GamesHash = require("./user/token/game/gameshash/gameshash");
 
 // export
 module.exports = [

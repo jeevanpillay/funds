@@ -15,12 +15,8 @@ const error = chalk.bold.red;
 const success = chalk.bold.green;
 const environment = chalk.bold.blue;
 
-// Configure PORT
-require("dotenv").config({
-  path: "variables.env"
-});
-const PORT = process.env.PORT || 4444;
-const NODE_ENV = process.env.NODE_ENV || "development";
+// Environment
+const { PORT, NODE_ENV } = require("./environment");
 
 // initialise application
 const app = express();

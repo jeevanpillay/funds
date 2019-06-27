@@ -1,7 +1,7 @@
 // environment setup
 require("dotenv").config({
     path: "variables.env"
-  });
+});
 
 // enviroment
 const PORT = process.env.PORT || 4444;

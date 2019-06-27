@@ -8,7 +8,7 @@ const token = require("./user/token/token.schema");
 const withdraw = require("./user/token/withdrawal/withdrawal.schema");
 const deposit = require("./user/token/deposit/deposit.schema");
 const bet = require("./user/token/bet/bet.schema");
-const gameshash = require("./games/gameshash/gameshash.schema");
+const gameshash = require("./user/token/game/gameshash/gameshash.schema");
 const investment = require("./user/token/investment/investment.schema");
 
 // root
