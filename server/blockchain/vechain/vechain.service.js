@@ -1,11 +1,16 @@
 const BlockchainService = require("../blockchain.service");
 const { createIncomingDeposit, getAllUsersAddress, updateExistingDeposits } = require("../../utils/dbutils");
 
+// imports
+const Web3 = require("web3");
+const Thorify = require("thorify").thorify;
+
+// Enviroment
+const { THOR_NETWORK, THOR_CONFIRMATION } = require("../../environment");
+
 module.exports = class VechainService extends BlockchainService {
-    constructor(web3, confirmations) {
-        super(web3, confirmations);
-        this._token = 'VET';
-        this._name = 'Vechain';
+    constructor() {
+        super(Thorify(new Web3(), THOR_NETWORK), THOR_CONFIRMATION, "VET", "VechainThor");
         this.setupWallet();
         this.setupBlockWatchService();
     }
@@ -15,8 +20,6 @@ module.exports = class VechainService extends BlockchainService {
         for (var wallet of await getAllUsersAddress(this.token)) {
             this.addWallet(wallet);
         }
-
-        console.log(this.wallets);
     }
 
     async setupBlockWatchService() {

@@ -1,5 +1,4 @@
 // Import Mongoose and GraphQL essentials
-const mongoose = require("mongoose");
 const { ApolloServer } = require("apollo-server-express");
 const typeDefs = require("./model/schemas");
 const resolvers = require("./model/resolvers");
