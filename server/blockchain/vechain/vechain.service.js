@@ -6,11 +6,11 @@ const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
 
 // Enviroment
-const { THOR_NETWORK, THOR_CONFIRMATION } = require("../../environment");
+const { THOR_NETWORK, THOR_CONFIRMATION, THOR_NAME, THOR_TOKEN } = require("../../environment");
 
 module.exports = class VechainService extends BlockchainService {
     constructor() {
-        super(Thorify(new Web3(), THOR_NETWORK), THOR_CONFIRMATION, "VET", "VechainThor");
+        super(Thorify(new Web3(), THOR_NETWORK), THOR_CONFIRMATION, THOR_TOKEN, THOR_NAME);
     }
     
     async setupWallet() {
@@ -58,7 +58,6 @@ module.exports = class VechainService extends BlockchainService {
 
         // check if the address exists and then create a deposit
         if (this.wallets[to]) {
-            console.log('WTF')
             const amount = parseFloat(value, 10) / 1e18;
             createIncomingDeposit(sender, to, amount, this.token, txid, blockNumber);
         }
