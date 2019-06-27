@@ -13,7 +13,7 @@ module.exports = class VechainService extends BlockchainService {
         super(Thorify(new Web3(), THOR_NETWORK), THOR_CONFIRMATION, THOR_TOKEN, THOR_NAME);
     }
     
-    async setupWallet() {
+    async setupUserWallet() {
         // get all users with their addresses
         for (var wallet of await getAllUsersAddress(this.token)) {
             this.addWallet(wallet);

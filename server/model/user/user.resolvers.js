@@ -80,7 +80,6 @@ exports.resolvers = {
               address: vetToken.address,
               privateKey: vetToken.privateKey
             });
-            console.log(Vechain.wallets);
           })
           .catch((err) => {
             throw new Error("Issue with saving the user", err)

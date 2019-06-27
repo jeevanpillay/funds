@@ -8,6 +8,7 @@ const chalk = require("chalk");
 
 // Connections
 const MongooseConnection = require('./db');
+const GraphQLConnection = require('./api');
 
 // Configure Chalk
 const error = chalk.bold.red;
@@ -22,10 +23,11 @@ const app = express();
 const db = new MongooseConnection();
 
 // Setup vechain and graphql services
-db.setupMongoDBService().then(({ server, vechain }) => {
+db.setupMongoDBService().then(({ vechain }) => {
   console.log(success(`Connected to ${environment("Vechain Thor")}`));
-  console.log(success(`Connected to ${environment("GraphQL")}`));
-  server.applyMiddleware({ app })
+  const gql = new GraphQLConnection(vechain);
+  gql.server.applyMiddleware({ app })
+  console.log(success(`API connection setup through to ${environment("GraphQL")}`));
 });
 
 // Setup cors so that client can talk to back end
