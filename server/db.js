@@ -28,9 +28,11 @@ module.exports = class MongooseConnection {
             // connected to DB
             console.log(success(`Connected to ${environment("MongoDB")}!`));
 
-            // setup blockchain deposit service
-            this._vechainService = this.setupVechainService();
-            this._gql = this.setupGraphQLService();
+            // setup vechain deposit service
+            await this.setupVechainService();
+
+            // setup graphql
+            this.setupGraphQLService();
         })
         .catch(err => console.log(error(err)));
         
@@ -42,11 +44,13 @@ module.exports = class MongooseConnection {
     }
 
     setupGraphQLService() {
-        return new GraphQLConnection(this.vechain);
+        this._gql = new GraphQLConnection(this.vechain);
     }
 
-    setupVechainService() {
-        return new VechainService();
+    async setupVechainService() {
+        this._vechainService = new VechainService();
+        await this._vechainService.setupWallet();
+        await this._vechainService.setupBlockWatchService();
     }
 
     get gql() {

@@ -11,8 +11,6 @@ const { THOR_NETWORK, THOR_CONFIRMATION } = require("../../environment");
 module.exports = class VechainService extends BlockchainService {
     constructor() {
         super(Thorify(new Web3(), THOR_NETWORK), THOR_CONFIRMATION, "VET", "VechainThor");
-        this.setupWallet();
-        this.setupBlockWatchService();
     }
     
     async setupWallet() {
