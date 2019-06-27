@@ -36,16 +36,6 @@ const TokenSchema = new Schema({
     default: 0,
     validate: balanceValidator
   },
-  withdrawals: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: [],
-    ref: 'Withdrawal'
-  },
-  deposits: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: [],
-    ref: 'Deposit' 
-  },
   investment: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Investment"

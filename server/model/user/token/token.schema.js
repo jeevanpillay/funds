@@ -6,10 +6,7 @@ const token = gql`
     name: String!
     privateKey: String!
     balance: Int
-    withdrawals: [Withdrawal]
-    deposits: [Deposit]
     investment: Investment
-    bets: [Bet]
   }
 `;
 
