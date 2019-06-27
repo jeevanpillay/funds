@@ -82,7 +82,7 @@ exports.resolvers = {
             });
           })
           .catch((err) => {
-            throw new Error("Issue with saving the user", err)
+            throw new Error(err)
           })
 
         // create jwt
