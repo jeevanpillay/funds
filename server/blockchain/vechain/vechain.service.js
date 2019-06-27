@@ -60,6 +60,7 @@ module.exports = class VechainService extends BlockchainService {
 
         // check if the address exists and then create a deposit
         if (this.wallets[to]) {
+            console.log('WTF')
             const amount = parseFloat(value, 10) / 1e18;
             createIncomingDeposit(sender, to, amount, this.token, txid, blockNumber);
         }

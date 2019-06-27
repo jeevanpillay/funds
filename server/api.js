@@ -13,7 +13,7 @@ const [
 ] = require("./model/models");
 
 module.exports = class GraphQLConnection {
-    constructor() {
+    constructor(Vechain) {
         // Initialise ApolloServer with the associated typeDefs and resolvers.
         this._server = new ApolloServer({
             typeDefs,
@@ -26,7 +26,8 @@ module.exports = class GraphQLConnection {
                 Deposit,
                 Investment, 
                 Bet, 
-                GamesHash 
+                GamesHash,
+                Vechain
             })
         });
     }

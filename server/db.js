@@ -8,6 +8,7 @@ const environment = chalk.bold.blue;
 
 // Blockchain imports
 const VechainService = require("./blockchain/vechain/vechain.service");
+const GraphQLConnection = require('./api');
 
 // Environments
 const { MONGO_URI } = require("./environment");
@@ -16,27 +17,43 @@ const { MONGO_URI } = require("./environment");
 module.exports = class MongooseConnection {
     constructor() {
         this._uri = MONGO_URI;
-        this.createConnection();
     }
 
-    createConnection() {
+    async setupMongoDBService() {
         // connect to database
-        mongoose
+        await mongoose.set("useCreateIndex", true);
+        await mongoose
         .connect(this._uri, { useNewUrlParser: true })
-        .then(() => {    
+        .then(async () => {    
             // connected to DB
             console.log(success(`Connected to ${environment("MongoDB")}!`));
 
             // setup blockchain deposit service
-            this.setupBlockchainService();
+            this._vechainService = this.setupVechainService();
+            this._gql = this.setupGraphQLService();
         })
         .catch(err => console.log(error(err)));
-
-        mongoose.set("useCreateIndex", true);
+        
+        // return the services
+        return {
+            vechain: this.vechain,
+            server: this.gql.server
+        }
     }
 
-    setupBlockchainService() {
-        this._vechainService = new VechainService();
-        console.log(success(`Succesfully created ${environment("block watch")} service!`));
+    setupGraphQLService() {
+        return new GraphQLConnection(this.vechain);
+    }
+
+    setupVechainService() {
+        return new VechainService();
+    }
+
+    get gql() {
+        return this._gql;
+    }
+
+    get vechain() {
+        return this._vechainService;
     }
 }

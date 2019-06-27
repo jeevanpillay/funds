@@ -39,10 +39,12 @@ exports.resolvers = {
     register: async (
       root,
       { username, email, password },
-      { User, Token }
+      { User, Token, Vechain }
     ) => {
       // check if user exists
-      const user = await User.findOne({ username });
+      const user = await User.findOne({
+        username
+      });
       if (user) {
         throw new Error("User already exists");
       }
@@ -54,9 +56,7 @@ exports.resolvers = {
       );
 
       // ensure pk exists
-      if (privateKey === null) {
-        throw new Error("Issue with creating account!");
-      } else {
+      try {
         // create token
         const vetToken = new Token({
           address: "0x" + hdkey.PrivateKeyToAddress(privateKey).toString("hex"),
@@ -74,13 +74,26 @@ exports.resolvers = {
 
         // insert vet token
         newUser.tokens.push(vetToken);
-        await newUser.save();
+        await newUser.save()
+          .then(() => {
+            Vechain.addWallet({
+              address: vetToken.address,
+              privateKey: vetToken.privateKey
+            });
+            console.log(Vechain.wallets);
+          })
+          .catch((err) => {
+            throw new Error("Issue with saving the user", err)
+          })
 
         // create jwt
-        return { token: createToken(newUser) };
+        return {
+          token: createToken(newUser)
+        };
+      } catch (err) {
+        throw new Error(err);
       }
     },
-
     login: async (root, { username, password }, { User }) => {
       const user = await User.findOne({ username });
       if (!user) {
