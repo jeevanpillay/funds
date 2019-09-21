@@ -21,12 +21,6 @@ cd server
 yarn
 ```
 
-Installing the client
-```
-cd client
-yarn
-```
-
 ## Running the tests
 
 Essentially we are running Mocha and Chai for the backend test's.
@@ -36,7 +30,7 @@ cd server
 yarn test
 ```
 
-## Essential knowledge to understand how some service works
+## Essential knowledge to understand how this service works
   * This is achieved through the management of serverSeed and hostServer, whereby the serverSeed is created at project inception
     * We can arbritarily generate a list of N serverSeeds through a seeding event
     * N must be large as 1e7 when in production
@@ -61,6 +55,5 @@ Essentially we are using MERN stack as the basis of the application.
 
 * [MongoDB](https://www.mongodb.com/) - NoSQL database
 * [ExpressJS](https://expressjs.com/) - Web framework for NodeJS
-* [React](https://reactjs.org/) - The front end framework to build the UI
 * [NodeJS](https://nodejs.org/en/) - The Javascript runtime library
 * [GraphQL](https://graphql.org/) - The API framework used
