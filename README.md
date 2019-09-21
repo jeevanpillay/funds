@@ -1,6 +1,6 @@
 # veBomb
 
-This application form the base files of the veBomb application. It will initially be used for a game similar to Bustabit, but will be extended to other similar games as well.
+This application form the base files of the veBomb application. It can be used to build applications that required withdrawal/deposit service
 
 ## Getting Started
 
@@ -37,8 +37,6 @@ yarn test
 ```
 
 ## Essential knowledge to understand how some service works
-* Provably Fair
-  * The application is built around this concept of provably fair games, whereby, users are able to prove that the integrity of the game has not been compromised
   * This is achieved through the management of serverSeed and hostServer, whereby the serverSeed is created at project inception
     * We can arbritarily generate a list of N serverSeeds through a seeding event
     * N must be large as 1e7 when in production
@@ -52,10 +50,11 @@ yarn test
       * O(M), where M is the number of transaction in the system
       * Also, the number of confirmations is an arbritray number that can be set to 1 if you want fast confirmation times
       * Note, current max TPS reached on Vechain = ~110 TPS 
-* Vechain Thor
+* Vechain Thor, Ethereum
   * Initial blockchain that we are running the application on
   * It's important to understand the difference between Ethereum and Vechain's transaction
     * Specifically how clauses work in Vechain
+   
     
 ## Built With
 Essentially we are using MERN stack as the basis of the application. 
@@ -65,8 +64,6 @@ Essentially we are using MERN stack as the basis of the application.
 * [React](https://reactjs.org/) - The front end framework to build the UI
 * [NodeJS](https://nodejs.org/en/) - The Javascript runtime library
 * [GraphQL](https://graphql.org/) - The API framework used
-* [ApolloClient](https://www.apollographql.com/docs/react/) - The API enabler that allows us to use GraphQL in React.
-* [NextJS](https://nextjs.org/docs) - Enabler for certain front end things like server side render, hot module replacement.
 
 ## Inspirations
 * [Bustabit](www.bustabit.com) - The initial application is based on this
