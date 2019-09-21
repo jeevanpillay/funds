@@ -7,7 +7,7 @@ const success = chalk.bold.green;
 const environment = chalk.bold.blue;
 
 // Blockchain imports
-const VechainService = require("./blockchain/vechain/vechain.service");
+const VechainService = require("./blockchain/vechain.service");
 
 // Environments
 const { MONGO_URI } = require("./environment");

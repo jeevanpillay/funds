@@ -1,12 +1,12 @@
-const BlockchainService = require("../blockchain.service");
-const { createIncomingDeposit, getAllUsersAddress, updateExistingDeposits } = require("../../utils/dbutils");
+const BlockchainService = require("./blockchain.service");
+const { createIncomingDeposit, getAllUsersAddress, updateExistingDeposits } = require("../utils/dbutils");
 
 // imports
 const Web3 = require("web3");
 const Thorify = require("thorify").thorify;
 
 // Enviroment
-const { THOR_NETWORK, THOR_CONFIRMATION, THOR_NAME, THOR_TOKEN } = require("../../environment");
+const { THOR_NETWORK, THOR_CONFIRMATION, THOR_NAME, THOR_TOKEN } = require("../environment");
 
 module.exports = class VechainService extends BlockchainService {
     constructor() {
