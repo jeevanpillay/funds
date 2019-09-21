@@ -1,6 +1,6 @@
-# veBomb
+# Funds
 
-This application form the base files of the veBomb application. It can be used to build applications that required withdrawal/deposit service
+This application form the base files of the withdraw/deposit service. Currently being rewritten in GoLang instead.
 
 ## Getting Started
 
@@ -64,6 +64,3 @@ Essentially we are using MERN stack as the basis of the application.
 * [React](https://reactjs.org/) - The front end framework to build the UI
 * [NodeJS](https://nodejs.org/en/) - The Javascript runtime library
 * [GraphQL](https://graphql.org/) - The API framework used
-
-## Inspirations
-* [Bustabit](www.bustabit.com) - The initial application is based on this
